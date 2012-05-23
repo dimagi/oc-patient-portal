@@ -1,0 +1,3 @@
+[submodule "submodules/touchforms"]
+	path = submodules/touchforms
+	url = git@github.com:dimagi/touchforms.git
