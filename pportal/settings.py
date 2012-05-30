@@ -158,3 +158,18 @@ LOGGING = {
 XFORMS_PLAYER_URL = 'http://localhost:4444'
 GMAPS_API_KEY = ''
 
+
+
+
+WEBSERVICE_URL = 'https://jikan.eclinicalhosting.com/OpenClinica-test-ws/'
+OC_USER = '...'
+OC_PASS = '...'
+STUDY_NAME = 'default-study'
+
+
+
+
+try:
+    from localsettings import *
+except ImportError:
+    pass

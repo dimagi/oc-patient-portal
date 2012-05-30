@@ -9,19 +9,20 @@
 </head>
 <body>
 
-{% for x in STATIC_URL %}
-asdasdf
-{% empty %}
-awefawef
-{% endfor %}
-
-[{{STATIC_URL}}] {{ asdf }}
-
 <button id="pull">Get latest forms</button>
 
 <hr>
 
-<p>blah blahwefwefwef</p>
+
+<script>
+
+PULL_FORMS_URL = '{% url pportal.main.views.form_pull %}';
+
+$(document).ready(function() {
+        init();
+    });
+
+</script>
 
 </body>
 </html>
