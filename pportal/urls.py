@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    (r'^', include('touchforms.formplayer.urls'))
+    (r'^', include('pportal.main.urls')),
+    (r'^xform/', include('touchforms.formplayer.urls')),
 )
