@@ -13,13 +13,15 @@
 
 <hr>
 
+<table id="xforms"><thead><td>form</td></thead><tbody /></table>
 
 <script>
 
 PULL_FORMS_URL = '{% url pportal.main.views.form_pull %}';
+FORMS = {{ formlist|safe }};
 
 $(document).ready(function() {
-        init();
+        init(FORMS);
     });
 
 </script>

@@ -9,7 +9,9 @@ import util
 import json
 
 def main(request):
-    return render(request, 'main.html', {})
+    return render(request, 'main.html', {
+            'formlist': json.dumps(util.get_latest()),
+        })
 
 @csrf_exempt
 def form_pull(request):
