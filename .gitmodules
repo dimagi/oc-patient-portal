@@ -1,6 +1,6 @@
 [submodule "submodules/touchforms"]
 	path = submodules/touchforms
-	url = git@github.com:dimagi/touchforms.git
+	url = git://github.com/dimagi/touchforms.git
 [submodule "submodules/ocxforms"]
 	path = submodules/ocxforms
-	url = git@github.com:dimagi/openclinica-xforms.git
+	url = git://github.com/dimagi/openclinica-xforms.git
