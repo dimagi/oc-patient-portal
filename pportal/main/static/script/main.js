@@ -16,6 +16,13 @@ function init(xforms) {
 		});
 	});
 
+    $('#clear').click(function() {
+	    $.post('/debug/clearforms', function(data) {
+		    window.location.reload();
+		});
+	    return false;
+	});
+
     xform_list(xforms);
 
 }

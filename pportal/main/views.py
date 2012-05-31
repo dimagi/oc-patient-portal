@@ -31,3 +31,8 @@ def form_play(request, form_id):
                       xform_id=form_id,
                       input_mode='full',
                       onsubmit=onsubmit)
+
+@csrf_exempt
+def clear_forms(request):
+    XForm.objects.all().delete()
+    return HttpResponse()
