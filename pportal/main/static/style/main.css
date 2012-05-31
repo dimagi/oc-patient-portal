@@ -1,0 +1,12 @@
+
+body {
+  font-family: sans-serif;
+}
+
+thead {
+  font-weight: bold;
+}
+
+td {
+  padding-right: 20px;
+}

@@ -23,10 +23,14 @@ function xform_list(xforms) {
 	    var $name = $('<td />');
 	    $name.text(xf.name);
 
+	    var $timestamp = $('<td />');
+	    $timestamp.text(xf.as_of);
+
 	    var $go = $('<td><a>fill out</a></td>');
-	    $go.find('a').attr('href', '/xform/enterall/' + xf.id);
+	    $go.find('a').attr('href', '/formplay/' + xf.id);
 
 	    $row.append($name);
+	    $row.append($timestamp);
 	    $row.append($go);
 	    $list.append($row);
 	});

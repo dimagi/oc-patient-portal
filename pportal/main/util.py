@@ -26,7 +26,7 @@ def get_latest():
     # inefficient
     latest = map_reduce(XForm.objects.all(), lambda xf: [(xf.namespace, xf)], lambda v: max(v, key=lambda xf: xf.created)).values()
     def reduce_xf(xf):
-        return {'name': xf.name, 'id': xf.id, 'xmlns': xf.namespace}
+        return {'name': xf.name, 'id': xf.id, 'xmlns': xf.namespace, 'as_of': xf.created.strftime('%Y-%m-%d %H:%M:%S')}
     return [reduce_xf(xf) for xf in latest]
 
 
