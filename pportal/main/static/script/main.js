@@ -8,7 +8,11 @@ function init(xforms) {
 	    $.post(PULL_FORMS_URL, function(data) {
 		    $('#pull').removeAttr('disabled');
 		    console.log(data);
-		    xform_list(data);
+		    xform_list(data.forms);
+		    $.each(data.errors, function(i, err) {
+			    console.log(err);
+			    alert(err);
+			});
 		});
 	});
 

@@ -17,8 +17,9 @@ def main(request):
 
 @csrf_exempt
 def form_pull(request):
-    util.pull_latest()
-    return HttpResponse(json.dumps(util.get_latest()), 'text/json')
+    errors = util.pull_latest()
+    payload = {'forms': util.get_latest(), 'errors': errors}
+    return HttpResponse(json.dumps(payload), 'text/json')
 
 @csrf_exempt
 def form_play(request, form_id):

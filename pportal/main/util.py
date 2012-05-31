@@ -18,9 +18,13 @@ def pull_latest():
     if not export:
         raise RuntimeError('error querying web service')
 
-    xforms = [u.dump_xml(xf, True) for xf in [convert._convert_xform(export)]] # convert_xform will eventually return a list
+    converted, errors = convert._convert_xform(export)
+    xforms = [u.dump_xml(xf, True) for xf in converted]
+
     for xf in xforms:
         update_xform(xf)
+
+    return errors
 
 def update_xform(xform):
     XForm.from_raw(xform)
