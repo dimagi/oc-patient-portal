@@ -137,22 +137,37 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+LOGFILE = '/tmp/pportal.log'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(name)s:%(levelname)s:%(asctime)s:%(message)s',
+        },
+    },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGFILE,
+            'maxBytes': 2**24,
+            'backupCount': 3,
+            'formatter': 'default',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stderr',
+            'formatter': 'default',
+         },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['logfile', 'console'],
         },
-    }
+    },
 }
 
 XFORMS_PLAYER_URL = 'http://localhost:4444'
