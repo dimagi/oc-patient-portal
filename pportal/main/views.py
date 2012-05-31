@@ -23,7 +23,7 @@ def form_pull(request):
 @csrf_exempt
 def form_play(request, form_id):
     def onsubmit(xform, instance):
-        print 'submit callback', xform, instance
+        util.submit(instance)
         return HttpResponseRedirect(reverse(main))
 
     return enter_form(request,

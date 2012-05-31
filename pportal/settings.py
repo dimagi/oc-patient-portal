@@ -165,7 +165,7 @@ WEBSERVICE_URL = 'https://jikan.eclinicalhosting.com/OpenClinica-test-ws/'
 OC_USER = '...'
 OC_PASS = '...'
 STUDY_NAME = 'default-study'
-
+SITE_ID = 'test-site'
 
 
 

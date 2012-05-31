@@ -4,7 +4,9 @@
 function init(xforms) {
 
     $('#pull').click(function() {
+	    $('#pull').attr('disabled', 'true');
 	    $.post(PULL_FORMS_URL, function(data) {
+		    $('#pull').removeAttr('disabled');
 		    console.log(data);
 		    xform_list(data);
 		});
