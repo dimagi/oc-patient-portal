@@ -1,7 +1,7 @@
 
 
 
-function init(xforms) {
+function init_patient(xforms) {
 
     $('#pull').click(function() {
 	    $('#pull').attr('disabled', 'true');
@@ -24,6 +24,30 @@ function init(xforms) {
 	});
 
     xform_list(xforms);
+
+}
+
+function init_admin() {
+    register_update_handler($('#get_studies'), function(onresult) {
+	    $.get(GET_STUDIES_URL, onresult);
+	}, function(data) {
+	    console.log('studies', data);
+	});
+
+    $('#clear_all').click(function() {
+	    alert('implement me!');
+	    return false;
+	});
+}
+
+function register_update_handler(button, ajax, onresult) {
+    button.click(function() {
+	    button.attr('disabled', 'true');
+	    ajax(function(data) {
+		    button.removeAttr('disabled');
+		    onresult(data);
+		});
+	});
 
 }
 

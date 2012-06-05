@@ -4,9 +4,25 @@ import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
 from touchforms.formplayer.models import XForm
+from main.models import Study
 import collections
 import logging
 from datetime import date, datetime
+
+def get_studies():
+    conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
+    ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
+    studies = ws.list_studies(conn)
+
+    for study in studies:
+        try:
+            existing = Study.objects.get(oid=study['oid'])
+            # TODO: update info here if changed
+        except Study.DoesNotExist:
+            new_study = Study(**study)
+            new_study.save()
+
+    return studies
 
 def study_export():
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
@@ -15,7 +31,7 @@ def study_export():
 
 def pull_latest():
     export = study_export()
-    if not export:
+    if export is None:
         raise RuntimeError('error querying web service')
 
     converted, errors = convert._convert_xform(export)

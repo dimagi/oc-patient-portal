@@ -15,6 +15,10 @@ def main(request):
             'formlist': json.dumps(util.get_latest()),
         })
 
+def form_admin(request):
+    return render(request, 'admin.html', {
+        })
+
 @csrf_exempt
 def form_pull(request):
     errors = util.pull_latest()
@@ -31,6 +35,9 @@ def form_play(request, form_id):
                       xform_id=form_id,
                       input_mode='full',
                       onsubmit=onsubmit)
+
+def get_studies(request):
+    return HttpResponse(json.dumps(util.get_studies()), 'text/json')
 
 @csrf_exempt
 def clear_forms(request):
