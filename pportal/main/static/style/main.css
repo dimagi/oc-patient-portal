@@ -10,3 +10,38 @@ thead {
 td {
   padding-right: 20px;
 }
+
+.study {
+    max-width: 30em;
+}
+
+.study button {
+    float: right;
+}
+
+.events {
+    margin-left: 2em;
+    clear: both;
+}
+
+.eventname {
+    font-weight: bold;
+}
+
+.crfs {
+    margin-left: 2em;
+    margin-top: .3em;
+    margin-bottom: .7em;
+}
+
+.openlink {
+    float: right;
+    margin-left: 1em;
+    font-size: 85%;
+}
+
+.asof {
+    font-size: 80%;
+    float: right;
+    margin-left: 2em;
+}

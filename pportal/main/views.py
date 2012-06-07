@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
-from touchforms.formplayer.models import XForm
+from models import *
 import util
 import json
 from touchforms.formplayer.views import enter_form
@@ -17,6 +17,7 @@ def main(request):
 
 def form_admin(request):
     return render(request, 'admin.html', {
+            'formlist': json.dumps(util.get_latest()),
         })
 
 @csrf_exempt
@@ -37,9 +38,16 @@ def form_play(request, form_id):
                       onsubmit=onsubmit)
 
 def get_studies(request):
-    return HttpResponse(json.dumps(util.get_studies()), 'text/json')
+    util.get_studies()
+    return HttpResponse(json.dumps(util.get_latest()), 'text/json')
 
 @csrf_exempt
-def clear_forms(request):
-    XForm.objects.all().delete()
+def clear_all(request):
+    CRF.objects.all().delete()
+    StudyEvent.objects.all().delete()
+    Study.objects.all().delete()
     return HttpResponse()
+
+@csrf_exempt
+def clear_study(request):
+    pass

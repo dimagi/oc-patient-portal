@@ -3,6 +3,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
+<script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
 <script src="{{STATIC_URL}}script/main.js"></script>
 <link rel="stylesheet" href="{{STATIC_URL}}style/main.css" />
 
@@ -14,16 +15,32 @@
 
 <hr>
 
-<table id="xforms"><thead><td>form</td><td>last updated</td></thead><tbody /></table>
+<div data-bind="foreach: studies">
+  <div class="study">
+    <button data-bind="ajaxbutton: name">Update CRFs</button>
+    <h3 data-bind="text: name"></h3>
+    <div class="events" data-bind="foreach: events">
+      <div class="event">
+	<span class="eventname" data-bind="text: name"></span>
+	<div class="crfs" data-bind="foreach: crfs">
+	  <a class="openlink" data-bind="attr: { href: '/formplay/' + id() }">open</a>
+	  <div class="asof" data-bind="text: as_of"></div>
+	  <div data-bind="text: name"></div>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
 GET_STUDIES_URL = '{% url pportal.main.views.get_studies %}'
 PULL_FORMS_URL = '{% url pportal.main.views.form_pull %}';
-//FORMS = {{ formlist|safe }};
+FORMS = {{ formlist|safe }};
 
 $(document).ready(function() {
-        init_admin();
+        init_admin(FORMS);
     });
 
 </script>
