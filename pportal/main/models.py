@@ -12,14 +12,17 @@ class StudyEvent(models.Model):
     name = models.CharField(max_length=200)
     study = models.ForeignKey(Study)
 
-class CRF(models.Model):
+class CRF(XForm):
     event = models.ForeignKey(StudyEvent)
-    xform = models.ForeignKey(XForm)
 
-    def name(self):
-        return self.xform.name
+    def __init__(self, *args, **kwargs):
+        super(CRF, self).__init__(*args, **kwargs)
+
+        try:
+            self.event
+        except StudyEvent.DoesNotExist:
+            self.event = StudyEvent.objects.get(oid=self.identifiers()['studyevent'])
 
     def identifiers(self):
-        return parse_xmlns(self.xform.namespace)
-
+        return parse_xmlns(self.namespace)
 

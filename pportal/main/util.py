@@ -3,8 +3,7 @@ import crf_to_xform as convert
 import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
-from touchforms.formplayer.models import XForm
-from main.models import Study
+from main.models import Study, StudyEvent, CRF
 import collections
 import logging
 from datetime import date, datetime
@@ -24,28 +23,34 @@ def get_studies():
 
     return studies
 
-def study_export():
+def study_export(study_name):
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
     ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
-    return ws.study_export(conn, settings.STUDY_NAME)
+    return ws.study_export(conn, study_name)
 
-def pull_latest():
-    export = study_export()
+def pull_latest(study_name):
+    export = study_export(study_name)
     if export is None:
         raise RuntimeError('error querying web service')
 
     converted = convert._convert_xform(export)
     xforms = [u.dump_xml(xf, True) for xf in converted['crfs']]
 
+    for se in converted['study_events']:
+        try:
+            StudyEvent.objects.get(oid=se['oid'])
+            # TODO: update if changed
+        except StudyEvent.DoesNotExist:
+            new_se = StudyEvent(oid=se['oid'], name=se['name'], study=Study.objects.get(identifier=study_name))
+            new_se.save()
+
     for xf in xforms:
         update_xform(xf)
-
-    # todo: process study events
 
     return converted['errors']
 
 def update_xform(xform):
-    XForm.from_raw(xform)
+    CRF.from_raw(xform)
 
 def get_latest():
     # inefficient
