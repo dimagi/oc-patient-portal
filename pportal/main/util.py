@@ -94,16 +94,11 @@ def generate_submit_payload(context, xfinst):
     if resp['odm']:
         return u.dump_xml(resp['odm'], pretty=True)
 
-def submit(context, xfinst):
-    resp = odm.process_instance(context, xfinst, None)
-
-    if resp['odm']:
-        logging.debug('converted to odm:\n%s' % u.dump_xml(resp['odm'], pretty=True))
-
-#        conn = WSDL(settings.WEBSERVICE_URL)
-#        auth = (settings.OC_USER, settings.OC_PASS)
-
-#        conn.submit(auth, resp['odm'])
+def submit(odm):
+    logging.debug('converted to odm:\n%s' % odm)
+    conn = WSDL(settings.WEBSERVICE_URL)
+    auth = (settings.OC_USER, settings.OC_PASS)
+    conn.submit(auth, odm)
 
 class WSDL(object):
     def __init__(self, url):

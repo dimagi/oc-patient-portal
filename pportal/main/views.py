@@ -11,9 +11,7 @@ import json
 from touchforms.formplayer.views import enter_form
 
 def main(request):
-    return render(request, 'main.html', {
-            'formlist': json.dumps(util.get_latest()),
-        })
+    assert False, 'page not ready yet'
 
 def form_admin(request):
     return render(request, 'admin.html', {

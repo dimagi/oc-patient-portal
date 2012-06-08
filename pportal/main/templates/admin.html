@@ -39,6 +39,13 @@
 
 <script>
 
+if (!window.console) {
+    window.console = {
+        log: function () { }
+    };
+}
+
+
 GET_STUDIES_URL = '{% url pportal.main.views.get_studies %}'
 PULL_FORMS_URL = '{% url pportal.main.views.form_pull "" %}';
 
