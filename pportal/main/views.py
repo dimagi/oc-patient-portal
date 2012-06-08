@@ -32,8 +32,11 @@ def form_pull(request, study_id):
 @csrf_exempt
 def form_play(request, form_id):
     def onsubmit(xform, instance):
-        util.submit(instance)
-        return HttpResponseRedirect(reverse(main))
+        odm = util.generate_submit_payload({
+                'subject_id': 'SS_123456',
+                'event_ordinal': 99,
+            }, instance)
+        return HttpResponse(odm, 'text/xml')
 
     return enter_form(request,
                       xform_id=form_id,

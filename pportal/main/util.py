@@ -89,20 +89,21 @@ def get_latest():
 
     return studies
 
-def submit(xfinst):
-    resp = odm.process_instance(xfinst, None)
+def generate_submit_payload(context, xfinst):
+    resp = odm.process_instance(context, xfinst, None)
+    if resp['odm']:
+        return u.dump_xml(resp['odm'], pretty=True)
+
+def submit(context, xfinst):
+    resp = odm.process_instance(context, xfinst, None)
 
     if resp['odm']:
         logging.debug('converted to odm:\n%s' % u.dump_xml(resp['odm'], pretty=True))
 
-        conn = WSDL(settings.WEBSERVICE_URL)
-        auth = (settings.OC_USER, settings.OC_PASS)
+#        conn = WSDL(settings.WEBSERVICE_URL)
+#        auth = (settings.OC_USER, settings.OC_PASS)
 
-        # this is all copied from the uconn proxy; in the end, subjects and study events will already exits/be scheduled
-        conn.create_subject(auth, resp['subject_id'], date.today(), resp['birthdate'], resp['gender'], resp['name'], resp['study_id'])
-        event_ix = conn.sched_event(auth, resp['subject_id'], resp['studyevent_id'],
-                                    resp['location'], resp['start'], resp['end'], resp['study_id'])
-        conn.submit(auth, resp['odm'])
+#        conn.submit(auth, resp['odm'])
 
 class WSDL(object):
     def __init__(self, url):
