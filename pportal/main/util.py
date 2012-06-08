@@ -56,17 +56,35 @@ def get_latest():
     # inefficient
     latest = map_reduce(CRF.objects.all(), lambda xf: [(xf.namespace, xf)], lambda v: max(v, key=lambda xf: xf.created)).values()
     def reduce_xf(xf):
-        return {'name': xf.name, 'id': xf.id, 'xmlns': xf.namespace, 'as_of': xf.created.strftime('%Y-%m-%d %H:%M:%S'), 'event_id': xf.event.id}
+        return {
+            'name': xf.name,
+            'id': xf.id,
+            'oid': xf.identifiers()['form'],
+            'xmlns': xf.namespace,
+            'as_of': xf.created.strftime('%Y-%m-%d %H:%M:%S'),
+            'event_id': xf.event.id
+        }
     crfs = [reduce_xf(xf) for xf in latest]
     by_event = map_reduce(crfs, lambda crf: [(crf['event_id'], crf)])
     _events = StudyEvent.objects.all()
     def reduce_event(se):
-        return {'name': se.name, 'crfs': by_event.get(se.id, []), 'study_id': se.study.id}
+        return {
+            'name': se.name,
+            'oid': se.oid,
+            'crfs': by_event.get(se.id, []),
+            'study_id': se.study.id
+        }
     events = [reduce_event(se) for se in _events]
     by_study = map_reduce(events, lambda e: [(e['study_id'], e)])
     _studies = Study.objects.all()
     def reduce_study(st):
-        return {'name': st.name, 'id': st.id, 'events': by_study.get(st.id, [])}
+        return {
+            'name': st.name,
+            'id': st.id,
+            'oid': st.oid,
+            'tag': st.identifier,
+            'events': by_study.get(st.id, [])
+        }
     studies = [reduce_study(st) for st in _studies]
 
     return studies

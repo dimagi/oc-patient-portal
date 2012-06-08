@@ -51,12 +51,14 @@ ko.bindingHandlers.ajaxbutton = {
 
 function CRFModel(data) {
     this.id = ko.observable(data.id);
+    this.oid = ko.observable(data.oid);
     this.name = ko.observable(data.name);
     this.as_of = ko.observable(data.as_of);
 }
 
 function StudyEventModel(data) {
     this.name = ko.observable(data.name);
+    this.oid = ko.observable(data.oid);
     this.crfs = ko.observableArray($.map(data.crfs, function(crf) {
 		return new CRFModel(crf);
 	    }));
@@ -64,6 +66,8 @@ function StudyEventModel(data) {
 
 function StudyModel(data) {
     this.id = ko.observable(data.id);
+    this.oid = ko.observable(data.oid);
+    this.tag = ko.observable(data.tag);
     this.name = ko.observable(data.name);
     this.events = ko.observableArray();
 

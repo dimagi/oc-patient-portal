@@ -19,14 +19,14 @@
   <div class="study">
     <button data-bind="ajaxbutton: name">Update CRFs</button>
     <a href="#" class="clearlink" data-bind="click: clearstudy" style="float: right; padding-right: 20px;">clear study (for testing)</a>
-    <h3 data-bind="text: name"></h3>
+    <h3 data-bind="text: name, attr: { title: oid() + ' (&quot;' + tag() + '&quot;)' }"></h3>
     <div class="events" data-bind="foreach: events">
       <div class="event">
-	<span class="eventname" data-bind="text: name"></span>
+	<span class="eventname" data-bind="text: name, attr: { title: oid }"></span>
 	<div class="crfs" data-bind="foreach: crfs">
 	  <a class="openlink" data-bind="attr: { href: '/formplay/' + id() }">open</a>
 	  <div class="asof" data-bind="text: as_of"></div>
-	  <div data-bind="text: name"></div>
+	  <div data-bind="text: name, attr: { title: oid }"></div>
 	</div>
       </div>
     </div>
