@@ -1,6 +1,5 @@
 
 
-
 function init_admin(data) {
     var model = new StudiesViewModel();
 
