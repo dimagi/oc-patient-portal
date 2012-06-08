@@ -61,7 +61,7 @@ def get_latest():
     by_event = map_reduce(crfs, lambda crf: [(crf['event_id'], crf)])
     _events = StudyEvent.objects.all()
     def reduce_event(se):
-        return {'name': se.name, 'crfs': by_event[se.id], 'study_id': se.study.id}
+        return {'name': se.name, 'crfs': by_event.get(se.id, []), 'study_id': se.study.id}
     events = [reduce_event(se) for se in _events]
     by_study = map_reduce(events, lambda e: [(e['study_id'], e)])
     _studies = Study.objects.all()

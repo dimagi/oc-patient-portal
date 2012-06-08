@@ -45,3 +45,11 @@ td {
     float: right;
     margin-left: 2em;
 }
+
+.empty {
+    font-style: italic;
+}
+
+.clearlink {
+    font-size: 80%;
+}

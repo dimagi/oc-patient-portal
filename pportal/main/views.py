@@ -21,9 +21,12 @@ def form_admin(request):
         })
 
 @csrf_exempt
-def form_pull(request):
-    errors = util.pull_latest()
-    payload = {'forms': util.get_latest(), 'errors': errors}
+def form_pull(request, study_id):
+    study_id = int(study_id)
+    study = Study.objects.get(id=study_id)
+    errors = util.pull_latest(study.identifier)
+    study_metadata = util.map_reduce(util.get_latest(), lambda s: [(s['id'], s)], lambda v: v[0])[study_id]['events']
+    payload = {'study_data': study_metadata, 'errors': errors}
     return HttpResponse(json.dumps(payload), 'text/json')
 
 @csrf_exempt
@@ -49,5 +52,8 @@ def clear_all(request):
     return HttpResponse()
 
 @csrf_exempt
-def clear_study(request):
-    pass
+def clear_study(request, study_id):
+    study_id = int(study_id)
+    CRF.objects.filter(event__study__id=study_id).delete()
+    StudyEvent.objects.filter(study__id=study_id).delete()
+    return HttpResponse()

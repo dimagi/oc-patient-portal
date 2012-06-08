@@ -1,32 +1,6 @@
 
 
 
-function init_patient(xforms) {
-
-    $('#pull').click(function() {
-	    $('#pull').attr('disabled', 'true');
-	    $.post(PULL_FORMS_URL, function(data) {
-		    $('#pull').removeAttr('disabled');
-		    console.log(data);
-		    xform_list(data.forms);
-		    $.each(data.errors, function(i, err) {
-			    console.log(err);
-			    alert(err);
-			});
-		});
-	});
-
-    $('#clear').click(function() {
-	    $.post('/debug/clearforms', function(data) {
-		    window.location.reload();
-		});
-	    return false;
-	});
-
-    xform_list(xforms);
-
-}
-
 function init_admin(data) {
     var model = new StudiesViewModel();
 
@@ -61,12 +35,19 @@ function register_update_handler(button, ajax, onresult) {
 ko.bindingHandlers.ajaxbutton = {
     init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
 	register_update_handler($(element), function(onresult) {
-		setTimeout(function() { onresult(viewModel.name()); }, 2000);
+		$.post(PULL_FORMS_URL + viewModel.id(), onresult);
 	    }, function(data) {
-		console.log('boom on ' + data);
+		console.log(data.study_data);
+		viewModel.load_metadata(data.study_data);
+		$.each(data.errors, function(i, err) {
+			console.log(err);
+			alert(err);
+		    });
 	    });
     }
 };
+
+
 
 function CRFModel(data) {
     this.id = ko.observable(data.id);
@@ -84,13 +65,14 @@ function StudyEventModel(data) {
 function StudyModel(data) {
     this.id = ko.observable(data.id);
     this.name = ko.observable(data.name);
-    this.events = ko.observableArray($.map(data.events, function(event) {
-		return new StudyEventModel(event);
-	    }));
+    this.events = ko.observableArray();
 
-    this.load_crfs = function() {
-	console.log('here i am');
+    this.load_metadata = function(events) {
+	this.events($.map(events, function(event) {
+		    return new StudyEventModel(event);
+		}));
     }
+    this.load_metadata(data.events);
 }
 
 function StudiesViewModel() {
@@ -105,6 +87,9 @@ function StudiesViewModel() {
     }
 }
 
-function oncrfupdate(data) {
-    data.load_crfs();
+function clearstudy(data) {
+    $.post('/debug/clearstudy/' + data.id(), function(data) {
+	    window.location.reload();
+	});
+    return false;
 }
