@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Study/CRF management</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
+
+<script src="{{STATIC_URL}}script/main.js"></script>
+
+<link rel="stylesheet" href="{{STATIC_URL}}style/main.css" />
+
+</head>
+<body>
+
+<button id="get_studies">Update study list</button>
+<a href="#" class="clearlink" id="clear_all" style="padding-left: 30px;">clear all (for testing)</a>
+
+<hr>
+
+<div data-bind="foreach: studies">
+  <div class="study">
+    <button data-bind="ajaxbutton: name">Update CRFs</button>
+    <a href="#" class="clearlink" data-bind="click: clearstudy" style="float: right; padding-right: 20px;">clear study (for testing)</a>
+    <h3 data-bind="text: name, attr: { title: oid() + ' (&quot;' + tag() + '&quot;)' }"></h3>
+    <div class="events" data-bind="foreach: events">
+      <div class="event">
+	<span class="eventname" data-bind="text: name, attr: { title: oid }"></span>
+	<div class="crfs" data-bind="foreach: crfs">
+	  <a class="openlink" data-bind="attr: { href: '/formplay/' + id() }">open</a>
+	  <div class="asof" data-bind="text: as_of"></div>
+	  <div data-bind="text: name, attr: { title: oid }"></div>
+	</div>
+      </div>
+    </div>
+    <div class="events empty" data-bind="visible: events().length == 0">No study metadata</div>
+  </div>
+</div>
+<div class="empty" data-bind="visible: studies().length == 0">No studies</div>
+
+<script>
+
+if (!window.console) {
+    window.console = {
+        log: function () { }
+    };
+}
+
+
+GET_STUDIES_URL = '{% url pportal.main.views.get_studies %}'
+PULL_FORMS_URL = '{% url pportal.main.views.form_pull "" %}';
+
+FORMS = {{ formlist|safe }};
+
+$(document).ready(function() {
+        init_admin(FORMS);
+    });
+
+</script>
+
+</body>
+</html>

@@ -3,53 +3,102 @@ import crf_to_xform as convert
 import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
-from touchforms.formplayer.models import XForm
+from main.models import Study, StudyEvent, CRF
 import collections
 import logging
 from datetime import date, datetime
 
-def study_export():
+def get_studies():
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
     ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
-    return ws.study_export(conn, settings.STUDY_NAME)
+    studies = ws.list_studies(conn)
 
-def pull_latest():
-    export = study_export()
-    if not export:
+    for study in studies:
+        try:
+            existing = Study.objects.get(oid=study['oid'])
+            # TODO: update info here if changed
+        except Study.DoesNotExist:
+            new_study = Study(**study)
+            new_study.save()
+
+    return studies
+
+def study_export(study_name):
+    conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
+    ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
+    return ws.study_export(conn, study_name)
+
+def pull_latest(study_name):
+    export = study_export(study_name)
+    if export is None:
         raise RuntimeError('error querying web service')
 
-    converted, errors = convert._convert_xform(export)
-    xforms = [u.dump_xml(xf, True) for xf in converted]
+    converted = convert._convert_xform(export)
+    xforms = [u.dump_xml(xf, True) for xf in converted['crfs']]
+
+    for se in converted['study_events']:
+        try:
+            StudyEvent.objects.get(oid=se['oid'])
+            # TODO: update if changed
+        except StudyEvent.DoesNotExist:
+            new_se = StudyEvent(oid=se['oid'], name=se['name'], study=Study.objects.get(identifier=study_name))
+            new_se.save()
 
     for xf in xforms:
         update_xform(xf)
 
-    return errors
+    return converted['errors']
 
 def update_xform(xform):
-    XForm.from_raw(xform)
+    CRF.from_raw(xform)
 
 def get_latest():
     # inefficient
-    latest = map_reduce(XForm.objects.all(), lambda xf: [(xf.namespace, xf)], lambda v: max(v, key=lambda xf: xf.created)).values()
+    latest = map_reduce(CRF.objects.all(), lambda xf: [(xf.namespace, xf)], lambda v: max(v, key=lambda xf: xf.created)).values()
     def reduce_xf(xf):
-        return {'name': xf.name, 'id': xf.id, 'xmlns': xf.namespace, 'as_of': xf.created.strftime('%Y-%m-%d %H:%M:%S')}
-    return [reduce_xf(xf) for xf in latest]
+        return {
+            'name': xf.name,
+            'id': xf.id,
+            'oid': xf.identifiers()['form'],
+            'xmlns': xf.namespace,
+            'as_of': xf.created.strftime('%Y-%m-%d %H:%M:%S'),
+            'event_id': xf.event.id
+        }
+    crfs = [reduce_xf(xf) for xf in latest]
+    by_event = map_reduce(crfs, lambda crf: [(crf['event_id'], crf)])
+    _events = StudyEvent.objects.all()
+    def reduce_event(se):
+        return {
+            'name': se.name,
+            'oid': se.oid,
+            'crfs': by_event.get(se.id, []),
+            'study_id': se.study.id
+        }
+    events = [reduce_event(se) for se in _events]
+    by_study = map_reduce(events, lambda e: [(e['study_id'], e)])
+    _studies = Study.objects.all()
+    def reduce_study(st):
+        return {
+            'name': st.name,
+            'id': st.id,
+            'oid': st.oid,
+            'tag': st.identifier,
+            'events': by_study.get(st.id, [])
+        }
+    studies = [reduce_study(st) for st in _studies]
 
-def submit(xfinst):
-    resp = odm.process_instance(xfinst, None)
+    return studies
 
+def generate_submit_payload(context, xfinst):
+    resp = odm.process_instance(context, xfinst, None)
     if resp['odm']:
-        logging.debug('converted to odm:\n%s' % u.dump_xml(resp['odm'], pretty=True))
+        return u.dump_xml(resp['odm'], pretty=True)
 
-        conn = WSDL(settings.WEBSERVICE_URL)
-        auth = (settings.OC_USER, settings.OC_PASS)
-
-        # this is all copied from the uconn proxy; in the end, subjects and study events will already exits/be scheduled
-        conn.create_subject(auth, resp['subject_id'], date.today(), resp['birthdate'], resp['gender'], resp['name'], resp['study_id'])
-        event_ix = conn.sched_event(auth, resp['subject_id'], resp['studyevent_id'],
-                                    resp['location'], resp['start'], resp['end'], resp['study_id'])
-        conn.submit(auth, resp['odm'])
+def submit(odm):
+    logging.debug('converted to odm:\n%s' % odm)
+    conn = WSDL(settings.WEBSERVICE_URL)
+    auth = (settings.OC_USER, settings.OC_PASS)
+    conn.submit(auth, odm)
 
 class WSDL(object):
     def __init__(self, url):
