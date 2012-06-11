@@ -11,7 +11,7 @@ import json
 from touchforms.formplayer.views import enter_form
 
 def main(request):
-    assert False, 'page not ready yet'
+    return HttpResponse('there is nothing here yet; try <a href="/admin">admin</a> for now')
 
 def form_admin(request):
     return render(request, 'admin.html', {
