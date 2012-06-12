@@ -30,6 +30,7 @@ def patient_landing(request, subj_id, study_name):
             })
 
     return render(request, 'patient.html', {
+            'subject_id': subj_id,
             'context': json.dumps(sched_context),
         })
 
