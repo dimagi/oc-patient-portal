@@ -10,8 +10,13 @@ import util
 import json
 from touchforms.formplayer.views import enter_form
 
-def main(request):
-    return HttpResponse('there is nothing here yet; try <a href="/admin">admin</a> for now')
+def landing_page(request):
+    return render(request, 'landing.html', {
+            'formlist': json.dumps(util.get_latest()),
+        })
+
+def patient_landing(request, subj_id, study_name):
+    return HttpResponse('under construction')
 
 def form_admin(request):
     return render(request, 'admin.html', {
@@ -44,6 +49,9 @@ def form_play(request, form_id):
 def get_studies(request):
     util.get_studies()
     return HttpResponse(json.dumps(util.get_latest()), 'text/json')
+
+def get_subjects(request, study_id):
+    return HttpResponse(json.dumps(util.get_subjects(study_id)), 'text/json')
 
 @csrf_exempt
 def clear_all(request):

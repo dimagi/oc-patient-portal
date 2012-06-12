@@ -21,6 +21,12 @@ function init_admin(data) {
     model.load(data);
 }
 
+function init_landing(data) {
+    var model = new StudySubjectsViewModel();
+    ko.applyBindings(model);
+    model.load(data);
+}
+
 function register_update_handler(button, ajax, onresult) {
     button.click(function() {
 	    button.attr('disabled', 'true');
@@ -78,15 +84,62 @@ function StudyModel(data) {
     this.load_metadata(data.events);
 }
 
+function SubjectModel(data) {
+    this.id = ko.observable(data.id);
+}
+
 function StudiesViewModel() {
     this.studies = ko.observableArray();
 
-    var model = this;
     this.load = function(data) {
 	var mapped = $.map(data, function(study) {
 		return new StudyModel(study);
 	    });
-	model.studies(mapped);
+	this.studies(mapped);
+    }
+}
+
+function StudySubjectsViewModel() {
+    this.studies = ko.observableArray();
+
+    this.selected_study = ko.observable();
+    this.loading_subjects = ko.observable(false);
+
+    this.subjects = ko.observableArray();
+    this._subjects_loader = ko.computed(function() {
+	    var study_name = this.selected_study();
+	    if (study_name) {
+		this.load_subjects_ajax(study_name);
+	    } else {
+		this.subjects([]);
+	    }
+	}, this);
+
+    this.selected_subject = ko.observable();
+
+    this.load_subjects_ajax = function(study_name) {
+	var model = this;
+	model.loading_subjects(true);
+	$.get(GET_SUBJECTS_URL + study_name, function(data) {
+		model.loading_subjects(false);
+		model.subjects($.map(data, function(subj) {
+			    return new SubjectModel({id: subj});
+			}));
+	    });
+    }
+
+    this.load = function(data) {
+	var mapped = $.map(data, function(study) {
+		return new StudyModel(study);
+	    });
+	this.studies(mapped);
+    }
+
+    this.go = function() {
+	var url = PATIENT_LANDING_URL;
+	url = url.replace('--subjid--', this.selected_subject());
+	url = url.replace('--studyname--', this.selected_study());
+	window.location.href = url;
     }
 }
 

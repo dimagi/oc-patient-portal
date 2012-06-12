@@ -23,6 +23,11 @@ def get_studies():
 
     return studies
 
+def get_subjects(study_name):
+    conn = ws.connect(settings.WEBSERVICE_URL, ws.SUBJ_WSDL)
+    ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
+    return sorted(ws.all_subjects(conn, study_name))
+
 def study_export(study_name):
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
     ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
