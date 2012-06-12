@@ -14,6 +14,7 @@ class StudyEvent(models.Model):
 
 class CRF(XForm):
     event = models.ForeignKey(StudyEvent)
+    oid = models.CharField(max_length=50)
 
     def __init__(self, *args, **kwargs):
         super(CRF, self).__init__(*args, **kwargs)
@@ -22,6 +23,9 @@ class CRF(XForm):
             self.event
         except StudyEvent.DoesNotExist:
             self.event = StudyEvent.objects.get(oid=self.identifiers()['studyevent'])
+
+        if not self.oid:
+            self.oid = self.identifiers()['form']
 
     def identifiers(self):
         return parse_xmlns(self.namespace)

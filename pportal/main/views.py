@@ -9,6 +9,7 @@ from models import *
 import util
 import json
 from touchforms.formplayer.views import enter_form
+import ocxforms.util as u
 
 def landing_page(request):
     return render(request, 'landing.html', {
@@ -16,7 +17,21 @@ def landing_page(request):
         })
 
 def patient_landing(request, subj_id, study_name):
-    return HttpResponse('under construction')
+    sched_context = util.get_subject_schedule(subj_id, study_name)
+
+    for u in sched_context['upcoming']:
+        event = StudyEvent.objects.get(oid=u['event_oid'])
+        form = CRF.objects.get(oid=u['form_oid'], event=event)
+        u.update({
+                'study_name': event.study.name,
+                'event_name': event.name,
+                'form_name': form.name,
+                'form_id': form.id,
+            })
+
+    return render(request, 'patient.html', {
+            'context': json.dumps(sched_context),
+        })
 
 def form_admin(request):
     return render(request, 'admin.html', {
@@ -39,7 +54,26 @@ def form_play(request, form_id):
                 'subject_id': 'SS_123456',
                 'event_ordinal': 99,
             }, instance)
-        return HttpResponse(odm, 'text/xml')
+        return HttpResponse(u.dump_xml(odm, pretty=True), 'text/xml')
+
+    return enter_form(request,
+                      xform_id=form_id,
+                      input_mode='full',
+                      onsubmit=onsubmit)
+
+@csrf_exempt
+def patient_form_play(request, subj_id, form_id, ordinal):
+    ordinal = int(ordinal)
+    if not ordinal:
+        ordinal = None
+
+    def onsubmit(xform, instance):
+        odm = util.generate_submit_payload({
+                'subject_id': subj_id,
+                'event_ordinal': ordinal,
+            }, instance)
+        util.submit(odm)
+        return redirect(landing_page)
 
     return enter_form(request,
                       xform_id=form_id,

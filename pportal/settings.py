@@ -164,9 +164,15 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'handlers': ['logfile', 'console'],
         },
+        'suds': {
+            'level': 'WARN',
+        },
+        'django.db.backends': {
+            'level': 'INFO',
+        }
     },
 }
 

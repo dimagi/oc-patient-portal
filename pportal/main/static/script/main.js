@@ -27,6 +27,11 @@ function init_landing(data) {
     model.load(data);
 }
 
+function init_patient(data) {
+    var model = new SubjectScheduleViewModel(data);
+    ko.applyBindings(model);
+}
+
 function register_update_handler(button, ajax, onresult) {
     button.click(function() {
 	    button.attr('disabled', 'true');
@@ -88,6 +93,14 @@ function SubjectModel(data) {
     this.id = ko.observable(data.id);
 }
 
+function SubjectEventModel(data) {
+    this.study_name = ko.observable(data.study_name);
+    this.event_name = ko.observable(data.event_name);
+    this.event_ordinal = ko.observable(data.ordinal);
+    this.form_name = ko.observable(data.form_name);
+    this.form_id = ko.observable(data.form_id);
+}
+
 function StudiesViewModel() {
     this.studies = ko.observableArray();
 
@@ -141,6 +154,19 @@ function StudySubjectsViewModel() {
 	url = url.replace('--studyname--', this.selected_study());
 	window.location.href = url;
     }
+}
+
+function SubjectScheduleViewModel(data) {
+    this.subject_oid = ko.observable(data.subject_oid);
+    this.upcoming = ko.observableArray();
+
+    this.load = function(data) {
+	var mapped = $.map(data, function(e) {
+		return new SubjectEventModel(e);
+	    });
+	this.upcoming(mapped);
+    }
+    this.load(data.upcoming);
 }
 
 function clearstudy(data) {

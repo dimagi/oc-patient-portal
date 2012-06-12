@@ -7,6 +7,7 @@ from main.models import Study, StudyEvent, CRF
 import collections
 import logging
 from datetime import date, datetime
+from ocxforms.crf_to_xform import _
 
 def get_studies():
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
@@ -94,13 +95,39 @@ def get_latest():
 
     return studies
 
+def get_subject_schedule(subject_id, study_id):
+    conn = ws.connect(settings.WEBSERVICE_URL, ws.SUBJ_WSDL)
+    ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
+    sched = ws.get_schedule(conn, subject_id, study_id)
+
+    sd = sched.find('.//%s' % _('SubjectData'))
+    subj_oid = sd.attrib['SubjectKey']
+
+    def crfs():
+        for sed in sd.findall(_('StudyEventData')):
+            # ignore study event status for now
+            event_oid = sed.attrib['StudyEventOID']
+            ordinal = sed.attrib.get('StudyEventRepeatKey')
+            if ordinal:
+                ordinal = int(ordinal)
+
+            for fd in sed.findall(_('FormData')):
+                form_oid = fd.attrib['FormOID']
+                status = fd.attrib[_('Status', 'oc')]
+
+                if status == 'not started':
+                    yield {'form_oid': form_oid, 'event_oid': event_oid, 'ordinal': ordinal}
+
+    return {
+        'subject_oid': subj_oid,
+        'upcoming': list(crfs()),
+    }
+
 def generate_submit_payload(context, xfinst):
-    resp = odm.process_instance(context, xfinst, None)
-    if resp['odm']:
-        return u.dump_xml(resp['odm'], pretty=True)
+    return odm.process_instance(context, xfinst, None).get('odm')
 
 def submit(odm):
-    logging.debug('converted to odm:\n%s' % odm)
+    logging.debug('converted to odm:\n%s' % u.dump_xml(odm, pretty=True))
     conn = WSDL(settings.WEBSERVICE_URL)
     auth = (settings.OC_USER, settings.OC_PASS)
     conn.submit(auth, odm)
