@@ -73,7 +73,10 @@ def patient_form_play(request, subj_id, form_id, ordinal):
                 'event_ordinal': ordinal,
             }, instance)
         util.submit(odm)
-        return redirect(landing_page)
+
+        # kind of a hack to get the redirect
+        study = Study.objects.get(oid=util._instance_metadata(instance)['study'])
+        return redirect(patient_landing, subj_id[len('SS_'):], study.identifier)
 
     return enter_form(request,
                       xform_id=form_id,

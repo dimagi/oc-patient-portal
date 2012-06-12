@@ -8,6 +8,7 @@ import collections
 import logging
 from datetime import date, datetime
 from ocxforms.crf_to_xform import _
+from xml.etree import ElementTree as et
 
 def get_studies():
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
@@ -131,6 +132,12 @@ def submit(odm):
     conn = WSDL(settings.WEBSERVICE_URL)
     auth = (settings.OC_USER, settings.OC_PASS)
     conn.submit(auth, odm)
+
+def _instance_metadata(inst):
+    return odm.parse_metadata(et.fromstring(inst))
+
+
+
 
 class WSDL(object):
     def __init__(self, url):
