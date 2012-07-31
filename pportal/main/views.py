@@ -13,7 +13,18 @@ import ocxforms.util as u
 
 @login_required
 def home(request):
-    return HttpResponse('hello')
+    if request.user.is_staff:
+        return render(request, 'admin_landing.html', {})
+    else:
+        return render(request, 'participant_landing.html', {})
+
+def manage_users(request):
+    return render(request, 'manage_users.html', {})
+
+def manage_forms(request):
+    return render(request, 'manage_forms.html', {
+            'formlist': json.dumps(util.get_latest()),
+        })
 
 def landing_page(request):
     return render(request, 'landing.html', {
@@ -36,11 +47,6 @@ def patient_landing(request, subj_id, study_name):
     return render(request, 'patient.html', {
             'subject_id': subj_id,
             'context': json.dumps(sched_context),
-        })
-
-def form_admin(request):
-    return render(request, 'admin.html', {
-            'formlist': json.dumps(util.get_latest()),
         })
 
 @csrf_exempt

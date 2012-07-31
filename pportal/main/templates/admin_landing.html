@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Participant Portal: Admin Console</title>
+</head>
+<body>
+
+<style>
+
+body {
+  font-family: sans-serif;
+}
+
+</style>
+
+<p style="float: right; margin: 3; font-size: 80%;"><a href="{% url django.contrib.auth.views.logout %}">Log out</a></p>
+
+<h2>Welcome, admin!</h2>
+<hr style="clear: both;">
+
+<p>What would you like to do?</p>
+
+<ul>
+<li><a href="{% url main.views.manage_users %}">Manage Users</a></li>
+<li><a href="{% url main.views.manage_forms %}">Manage Studies and CRFs</a></li>
+<li>Test CRFs</li>
+</ul>
+
+</body>
+</html>
+

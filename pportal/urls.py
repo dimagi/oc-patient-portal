@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     (r'^', include('pportal.main.urls')),
     (r'^xform/', include('touchforms.formplayer.urls')),
 
-    (r'^accounts/login/$', 'django.contrib.auth.views.login')
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
 )
