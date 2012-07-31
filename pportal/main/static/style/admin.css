@@ -1,0 +1,9 @@
+
+body {
+  font-family: sans-serif;
+  background: #f0f0f0;
+  background-image: url(/static/img/umms_logo_faded.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position:center; 
+}
