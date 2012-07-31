@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Participant Portal: Log In</title>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/base.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/login.css" />
+</head>
+
+<body class="login">
+
+<style>
+
+body.login {
+  background: url({{ STATIC_URL }}img/umms_logo_faded.jpg);
+}
+
+</style>
+
+<div id="container">
+    <div id="header">
+        <div id="branding">
+        
+<h1 id="site-name">Welcome to Participant Portal!</h1>
+
+        </div>
+    </div>
+
+    <div id="content" class="colM">
+        
+      <p style="margin-top: 1em; font-style: italic;">Please log in&hellip;</p>
+
+{% if form.errors %}
+        <p class="errornote">Invalid username/password!</p>
+{% endif %}
+
+<div id="content-main">
+<form  method="post" action="{% url django.contrib.auth.views.login %}" id="login-form">
+  {% csrf_token %}
+
+  <div class="form-row">
+    {{ form.username.label_tag }} {{ form.username }}
+  </div>
+
+  <div class="form-row">
+    {{ form.password.label_tag }} {{ form.password }}
+  </div>
+
+  <input type="hidden" name="next" value="{{ next }}" />
+
+  <div class="submit-row">
+    <label>&nbsp;</label><input type="submit" value="Log in" />
+  </div>
+</form>
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+</div>
+        
+        <br class="clear" />
+    </div>
+    <div id="footer"></div>
+</div>
+</body>
+</html>

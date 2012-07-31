@@ -11,6 +11,10 @@ import json
 from touchforms.formplayer.views import enter_form
 import ocxforms.util as u
 
+@login_required
+def home(request):
+    return HttpResponse('hello')
+
 def landing_page(request):
     return render(request, 'landing.html', {
             'formlist': json.dumps(util.get_latest()),
