@@ -13,55 +13,57 @@
 </head>
 <body>
 
+<style>
+
+.button {
+  -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+  box-shadow:inset 0px 1px 0px 0px #ffffff;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+  background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+  background-color:#ededed;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #dcdcdc;
+  display:inline-block;
+  color:#777777;
+  font-family:arial;
+  font-size:15px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:1px 1px 0px #ffffff;
+}
+
+.button:hover {
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+  background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+  background-color:#dfdfdf;
+}
+
+.active {
+
+}
+
+</style>
+
 <h1>Manage Users</h1>
 <hr>
 
-
-<script>
-
-if (!window.console) {
-    window.console = {
-        log: function () { }
-    };
-}
-
-
-$(document).ready(function() {
-
-    });
-
-</script>
-
-</body>
-</html>
-
-<!--
-
-<html>
-<head>
-<title>Patient Selection</title>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
-
-<script src="{{STATIC_URL}}script/main.js"></script>
-
-<link rel="stylesheet" href="{{STATIC_URL}}style/main.css" />
-
-</head>
-<body>
-
 <div style="float: left; padding-right: 50px;">
-<h3>choose study</h3>
+<h3>1. select a study</h3>
 <div data-bind="foreach: studies">
 <div>
-<input data-bind="attr: { id: 'study' + $index(), value: tag }, checked: $parent.selected_study" type="radio" name="study" /> <label data-bind="attr: { for: 'study' + $index() }, text: name"></label>
+<a href="#" class="button" data-bind="text: name"></a><!--input data-bind="attr: { id: 'study' + $index(), value: tag }, checked: $parent.selected_study" type="radio" name="study" /> <label data-bind="attr: { for: 'study' + $index() }, text: name"></label>-->
 </div>
 </div>
 </div>
 
 <div data-bind="visible: selected_study" style="float: left; padding-right: 50px;">
-<h3>choose subject</h3>
+<h3>2. select subject</h3>
 <div data-bind="visible: loading_subjects" style="font-style: italic;">loading subjects&hellip;</div>
 <div data-bind="foreach: subjects">
 <div>
@@ -99,5 +101,3 @@ $(document).ready(function() {
 
 </body>
 </html>
-
--->

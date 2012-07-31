@@ -23,7 +23,9 @@ def manage_users(request):
     if not request.user.is_staff:
         return HttpResponseForbidden('admin access required')
 
-    return render(request, 'manage_users.html', {})
+    return render(request, 'manage_users.html', {
+            'formlist': json.dumps(util.get_latest()),
+        })
 
 @login_required
 def manage_forms(request):
@@ -34,9 +36,6 @@ def manage_forms(request):
             'formlist': json.dumps(util.get_latest()),
         })
 
-#    return render(request, 'landing.html', {
-#            'formlist': json.dumps(util.get_latest()),
-#        })
 
 def patient_landing(request, subj_id, study_name):
     sched_context = util.get_subject_schedule(subj_id, study_name)
