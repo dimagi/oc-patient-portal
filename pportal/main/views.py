@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -18,18 +18,25 @@ def home(request):
     else:
         return render(request, 'participant_landing.html', {})
 
+@login_required
 def manage_users(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden('admin access required')
+
     return render(request, 'manage_users.html', {})
 
+@login_required
 def manage_forms(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden('admin access required')
+
     return render(request, 'manage_forms.html', {
             'formlist': json.dumps(util.get_latest()),
         })
 
-def landing_page(request):
-    return render(request, 'landing.html', {
-            'formlist': json.dumps(util.get_latest()),
-        })
+#    return render(request, 'landing.html', {
+#            'formlist': json.dumps(util.get_latest()),
+#        })
 
 def patient_landing(request, subj_id, study_name):
     sched_context = util.get_subject_schedule(subj_id, study_name)

@@ -1,16 +1,12 @@
 <html>
 <head>
 <title>Participant Portal: Admin Console</title>
+
+<link rel="stylesheet" href="{{STATIC_URL}}style/main.css" />
+<link rel="stylesheet" href="{{STATIC_URL}}style/admin.css" />
+
 </head>
 <body>
-
-<style>
-
-body {
-  font-family: sans-serif;
-}
-
-</style>
 
 <p style="float: right; margin: 3; font-size: 80%;"><a href="{% url django.contrib.auth.views.logout %}">Log out</a></p>
 
@@ -19,10 +15,16 @@ body {
 
 <p>What would you like to do?</p>
 
+<style>
+li {
+  font-weight: bold;
+  margin-bottom: .75em;
+}
+</style>
+
 <ul>
 <li><a href="{% url main.views.manage_users %}">Manage Users</a></li>
 <li><a href="{% url main.views.manage_forms %}">Manage Studies and CRFs</a></li>
-<li>Test CRFs</li>
 </ul>
 
 </body>

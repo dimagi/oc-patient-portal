@@ -6,7 +6,6 @@ urlpatterns = patterns('pportal.main.views',
     (r'^manage/users/$', 'manage_users'),
     (r'^manage/forms/$', 'manage_forms'),
 
-    (r'^debug/select/$', 'landing_page'),
     (r'^participant/(?P<subj_id>.*)/(?P<study_name>.*)$', 'patient_landing'),
 
     # api calls
