@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 from models import *
@@ -156,11 +157,11 @@ def register_user(request):
     u.username = u.email
     u.first_name = request.POST.get('fname').strip()
     u.last_name = request.POST.get('lname').strip()
-    u.set_password(request.POST.get('pass'))
+    password = request.POST.get('pass')
+    u.set_password(password)
 
     pend = PendingRegistration.objects.get(reg_code = request.POST.get('regcode'))
     up = UserProfile()
-    up.user = u
     up.subject_id = pend.subj_id
     up.study_name = pend.study_name
     up.full_name = '%s %s' % (u.first_name, u.last_name)
@@ -168,7 +169,9 @@ def register_user(request):
 
     # transaction?
     u.save()
+    up.user = u
     up.save()
     pend.delete()
 
+    login(request, authenticate(username=u.username, password=password))
     return HttpResponseRedirect('/')
