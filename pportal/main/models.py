@@ -1,6 +1,7 @@
 from django.db import models
 from touchforms.formplayer.models import XForm
 from xforminst_to_odm import parse_xmlns
+from django.contrib.auth.models import User
 
 class Study(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
@@ -32,4 +33,13 @@ class CRF(XForm):
 
 class PendingRegistration(models.Model):
     subj_id = models.CharField(max_length=50, primary_key=True)
+    study_name = models.CharField(max_length=50)
     reg_code = models.CharField(max_length=50)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+
+    #full_name = models.CharField(max_length=200)
+    #display_name = models.CharField(max_length=50)
+    subject_id = models.CharField(max_length=50)
+    study_name = models.CharField(max_length=50)

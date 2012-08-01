@@ -105,13 +105,13 @@ function SubjectModel(data) {
     this.reg_status = ko.observable(data.reg_status);
     this.reg_info = ko.observable(data.reg_info);
 
-    this.register = function() {
+    this.register = function(root) {
 	$('#subj_id').text(this.id());
 	$('#reg_code').html('&mdash;');
 	reg_code_popup.dialog('open');
 
 	var model = this;
-	$.post('/register/newcode/', {subj_id: this.id()}, function(data) {
+	$.post('/register/newcode/', {subj_id: this.id(), study: root.selected_study()}, function(data) {
 		$('#reg_code').text(fmt_reg_code(data.code));
 		model.reg_status('pending');
 		model.reg_info(data.code);
@@ -154,8 +154,6 @@ function StudySubjectsViewModel() {
 	    }
 	}, this);
 
-    this.selected_subject = ko.observable();
-
     this.load_subjects_ajax = function(study_name) {
 	var model = this;
 	model.loading_subjects(true);
@@ -174,17 +172,23 @@ function StudySubjectsViewModel() {
 	this.studies(mapped);
     }
 
+    /*
     this.go = function() {
 	var url = PATIENT_LANDING_URL;
 	url = url.replace('--subjid--', this.selected_subject());
 	url = url.replace('--studyname--', this.selected_study());
 	window.location.href = url;
     }
+    */
 
     var model = this;
     this.selectStudy = function(study) {
 	model.selected_study(study.tag());
     };
+
+    this.register = function(user) {
+	user.register(model);
+    }
 }
 
 function SubjectScheduleViewModel(data) {

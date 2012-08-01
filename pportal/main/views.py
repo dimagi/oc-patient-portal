@@ -124,10 +124,12 @@ def clear_study(request, study_id):
 @csrf_exempt
 def gen_reg_code(request):
     subject_id = request.POST.get('subj_id')
+    study_name = request.POST.get('study')
     code = util.gen_reg_code()
 
     pending_reg = PendingRegistration()
     pending_reg.subj_id = subject_id
+    pending_reg.study_name = study_name
     pending_reg.reg_code = code
     pending_reg.save()
 

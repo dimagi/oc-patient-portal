@@ -83,19 +83,15 @@
 	  <td data-bind="text: id"></td>
 	  <!-- $parent.selected_subject -->
 	  <td style="font-size: 80%;">
-	    <div data-bind="visible: reg_status() == null"><a href="#" data-bind="click: register">(register)</a></div>
+	    <div data-bind="visible: reg_status() == null"><a href="#" data-bind="click: $root.register">(register)</a></div>
 	    <div data-bind="visible: reg_status() == 'pending'">pending (reg code: <span style="font-weight: bold;" data-bind="text: fmt_reg_code(reg_info())"></span>)</div>
+	    <div data-bind="visible: reg_status() == 'registered'">registered (account: <span style="font-weight: bold;" data-bind="text: reg_info"></span>)</div>
 	  </td>
 	  <!-- view landing page (for testing)? -->
 	</tr>
       </tbody>
     </table>
   </div>
-</div>
-
-<div data-bind="visible: selected_subject, click: go" style="float: left">
-<h3>&nbsp;</h3>
-<button>Go</button>
 </div>
 
 <div id="regpopup" title="Registration Code" style="display: none;">

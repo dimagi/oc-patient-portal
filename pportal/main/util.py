@@ -3,7 +3,7 @@ import crf_to_xform as convert
 import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
-from main.models import Study, StudyEvent, CRF, PendingRegistration
+from main.models import Study, StudyEvent, CRF, PendingRegistration, UserProfile
 import collections
 import logging
 from datetime import date, datetime
@@ -36,10 +36,19 @@ def get_subjects(study_name):
         reg_status = None
         reg_info = None
 
-        pending_reg = PendingRegistration.objects.filter(subj_id=s)
-        if pending_reg:
+        try:
+            user = UserProfile.objects.get(subject_id=s, study_name=study_name)
+            reg_status = 'registered'
+            reg_info = user.user.username
+        except UserProfile.DoesNotExist:
+            pass
+
+        try:
+            pending_reg = PendingRegistration.objects.get(subj_id=s, study_name=study_name)
             reg_status = 'pending'
-            reg_info = pending_reg[0].reg_code
+            reg_info = pending_reg.reg_code
+        except PendingRegistration.DoesNotExist:
+            pass
 
         yield {
             'id': s,
