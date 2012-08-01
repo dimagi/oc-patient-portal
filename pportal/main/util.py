@@ -3,7 +3,7 @@ import crf_to_xform as convert
 import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
-from main.models import Study, StudyEvent, CRF
+from main.models import Study, StudyEvent, CRF, PendingRegistration
 import collections
 import logging
 from datetime import date, datetime
@@ -30,7 +30,22 @@ def get_studies():
 def get_subjects(study_name):
     conn = ws.connect(settings.WEBSERVICE_URL, ws.SUBJ_WSDL)
     ws.authenticate(conn, (settings.OC_USER, settings.OC_PASS))
-    return sorted(ws.all_subjects(conn, study_name))
+    subj_ids = sorted(ws.all_subjects(conn, study_name))
+
+    for s in subj_ids:
+        reg_status = None
+        reg_info = None
+
+        pending_reg = PendingRegistration.objects.filter(subj_id=s)
+        if pending_reg:
+            reg_status = 'pending'
+            reg_info = pending_reg[0].reg_code
+
+        yield {
+            'id': s,
+            'reg_status': reg_status,
+            'reg_info': reg_info,
+        }
 
 def study_export(study_name):
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)

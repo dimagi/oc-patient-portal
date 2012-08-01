@@ -1,6 +1,5 @@
 
-
-function init_admin(data) {
+function init_form_admin(data) {
     var model = new StudiesViewModel();
 
     register_update_handler($('#get_studies'), function(onresult) {
@@ -21,7 +20,14 @@ function init_admin(data) {
     model.load(data);
 }
 
-function init_landing(data) {
+function init_user_admin(data) {
+    reg_code_popup = $('#regpopup').dialog({
+	    modal: true,
+	    resizable: false,
+	    width: 600,
+	    autoOpen: false,
+	});
+
     var model = new StudySubjectsViewModel();
     ko.applyBindings(model);
     model.load(data);
@@ -90,23 +96,25 @@ function StudyModel(data) {
 }
 
 function fmt_reg_code(code) {
+    code = code || '';
     return code.substring(0, 4) + ' ' + code.substring(4, 8) + ' ' + code.substring(8, 12);
 }
 
 function SubjectModel(data) {
     this.id = ko.observable(data.id);
+    this.reg_status = ko.observable(data.reg_status);
+    this.reg_info = ko.observable(data.reg_info);
 
     this.register = function() {
 	$('#subj_id').text(this.id());
 	$('#reg_code').html('&mdash;');
-	$('#regpopup').dialog({
-		modal: true,
-		resizable: false,
-                width: 600,
-	    });
+	reg_code_popup.dialog('open');
 
+	var model = this;
 	$.post('/register/newcode/', {subj_id: this.id()}, function(data) {
 		$('#reg_code').text(fmt_reg_code(data.code));
+		model.reg_status('pending');
+		model.reg_info(data.code);
 	    });
     }
 }
@@ -154,7 +162,7 @@ function StudySubjectsViewModel() {
 	$.get(GET_SUBJECTS_URL + study_name, function(data) {
 		model.loading_subjects(false);
 		model.subjects($.map(data, function(subj) {
-			    return new SubjectModel({id: subj});
+			    return new SubjectModel(subj);
 			}));
 	    });
     }

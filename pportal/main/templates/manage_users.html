@@ -82,8 +82,9 @@
 	<tr>
 	  <td data-bind="text: id"></td>
 	  <!-- $parent.selected_subject -->
-	  <td>
-	    <div><a href="#" style="font-size: 80%;" data-bind="click: register">(register)</a></div>
+	  <td style="font-size: 80%;">
+	    <div data-bind="visible: reg_status() == null"><a href="#" data-bind="click: register">(register)</a></div>
+	    <div data-bind="visible: reg_status() == 'pending'">pending (reg code: <span style="font-weight: bold;" data-bind="text: fmt_reg_code(reg_info())"></span>)</div>
 	  </td>
 	  <!-- view landing page (for testing)? -->
 	</tr>
@@ -119,7 +120,7 @@ PATIENT_LANDING_URL = '{% url pportal.main.views.patient_landing "--subjid--" "-
 FORMS = {{ formlist|safe }};
 
 $(document).ready(function() {
-        init_landing(FORMS);
+        init_user_admin(FORMS);
     });
 
 </script>

@@ -105,7 +105,7 @@ def get_studies(request):
     return HttpResponse(json.dumps(util.get_latest()), 'text/json')
 
 def get_subjects(request, study_id):
-    return HttpResponse(json.dumps(util.get_subjects(study_id)), 'text/json')
+    return HttpResponse(json.dumps(list(util.get_subjects(study_id))), 'text/json')
 
 @csrf_exempt
 def clear_all(request):
