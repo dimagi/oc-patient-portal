@@ -1,0 +1,109 @@
+body, div, td, th, table, img, form { color: #212121;}
+body, div, td, th, table, img, form, .x-form-item, .x-panel-header, .x-btn button { font-size: 13px;}
+a, a:visited, .labkey-link, .labkey-link:visited { color: #990000;}
+table#header { border-color: #990000;}
+.labkey-header { color: #990000;}
+.labkey-header:hover { background-color: #FFECB0;}
+th.labkey-header { color: #212121;}
+th.labkey-header a:hover { color: #990000;}
+.labkey-header-large { color: #212121;}
+.labkey-header-large:hover { background-color: #FFECB0;}
+.labkey-announcement-title span, .labkey-announcement-title a { color: #212121;}
+.labkey-announcement-title a.announcement-title-link { color:#990000;}
+.labkey-form-label, tr td.labkey-form-label { background-color: #EEEBE0;}
+.labkey-form-label-nowrap, tr td.labkey-form-label-nowrap { background-color: #EEEBE0;}
+div.labkey-button-bar, table.labkey-button-bar { background-color: #FFECB0;}
+.labkey-button-bar .labkey-button, .labkey-button-bar .labkey-menu-button, .labkey-button-bar .labkey-button:visited, .labkey-button-bar .labkey-menu-button:visited { background-color: #FFECB0; border: 1px solid #FFECB0; color: #990000;}
+.labkey-button-bar .labkey-button:hover, .labkey-button-bar .labkey-menu-button:hover { background-color: #FFFFFF; border: 1px solid #CCCCCC; color: #212121;}
+a.labkey-menu-button { color: #990000;}
+a.labkey-menu-button:hover a.labkey-menu-button:hover span { border: 1px solid #CCCCCC; background-color: #FFFFFF; color: #212121;}
+a.labkey-button, a.labkey-button:visited, span.labkey-button { background-color: #FFFFFF; color: #990000;}
+a.labkey-button:hover, span.labkey-button:hover { background-color: #FFFFFF; color: #212121;}
+a.labkey-button:active, span.labkey-button:active { background-color: #FFFFFF;}
+.labkey-frame { background-color: #FFECB0;}
+.labkey-app-bar div.labkey-folder-header { background-color:#EEEBE0;}
+.labkey-app-bar ul.labkey-tab-strip a { border-bottom: 1px solid #FFFCF8;}
+.labkey-app-bar li.labkey-tab-inactive a { color: #990000;}
+.labkey-app-bar li.labkey-tab-active a { background-color: #FFFCF8; border-bottom: 1px solid #FFFCF8;}
+.labkey-app-bar ul.labkey-tab-strip a:hover { background-color: #FFFCF8; border-bottom: 1px solid #FFFCF8;}
+.labkey-tab-active {}
+td.labkey-app-button-bar-button a { // color:#990000;}
+.labkey-completion-highlight { background-color: #FFECB0;}
+.labkey-full-screen-background { background-color: #FFFCF8;}
+.labkey-full-screen-table { background-color: #FFFFFF; border: 5px solid #EEEBE0;}
+table.labkey-customize-view td, table.labkey-customize-view a, table.labkey-customize-view .labkey-tab a:hover { background: #FFFFFF;}
+table.labkey-data-region { background-color: #FFFFFF;}
+th.labkey-col-header-filter, td.labkey-col-header-filter, tr.labkey-col-header-filter th { color: #990000;}
+th.labkey-col-header-filter:hover, td.labkey-col-header-filter:hover, tr.labkey-col-header-filter th:hover { background-color: #FFECB0;}
+.labkey-data-region .labkey-data-region-title { background-color: #FFFFFF;}
+.labkey-data-region-header-container { background-color: #FFECB0;}
+td.labkey-blank-cell, th.labkey-blank-cell { background: #FFFFFF;}
+.labkey-customview-item.x-view-over { border-top: 1px solid #990000; border-bottom: 1px solid #990000;}
+#helpDiv { background-color:#FFFFFF;}
+table.labkey-main { background-color: #FFFCF8;}
+#headerpanel { background-color: #FFFFFF;}
+td.labkey-site-nav-panel { background-color: #FFFCF8; border-right: 1px solid #EEEBE0;}
+td.labkey-main-menu { background-color: #990000; border-color: none;}
+td.labkey-main-menu a.selected { background-color:#FFFFFF; color:#212121; border-bottom-color:#FFFFFF;}
+.labkey-webpart-menu { background-color:#FFFFFF;}
+.labkey-search-filter A, .labkey-search-filter A:visited { color: #CCCCCC;}
+.labkey-search-navresults H3 { color: #CCCCCC;}
+.labkey-search-results TD { color: #CCCCCC;}
+table.labkey-expandable-nav { background-color: #FFFCF8;}
+tr.labkey-nav-tree-row { color: #990000;}
+tr.labkey-nav-tree-row:hover { background-color: #FFECB0;}
+table#navBar { background-color:#FFFCF8;}
+table.labkey-wp { width: 100%; border-spacing: 0; *border-collapse: collapse; border: 5px solid #EEEBE0;}
+td.labkey-wp-body { width: 100%; padding: 10px; background: #FFFFFF;}
+tr.labkey-wp-header { background-color: #EEEBE0;}
+.labkey-wp-header th, .labkey-wp-header td, .labkey-wp-title { color:#212121;}
+.labkey-wp-text-buttons a, .labkey-wp-text-buttons a:visited { color:#990000;}
+.labkey-wp-header a:link, .labkey-wp-header a:visited { color:#990000;}
+.labkey-wp-header a:hover { color:#212121;}
+th.labkey-wp-title-left { color: #212121;}
+th.labkey-wp-title-left a:link, th.labkey-wp-title-left a:visited { color: #212121;}
+th.labkey-wp-title-left a:hover { color: #990000;}
+a.labkey-text-link, a.labkey-text-link:visited { color: #990000;}
+a.labkey-text-link:hover { color: #212121;}
+td.labkey-ms1-filter { background: #FFECB0;}
+.gwt-DialogBox .Caption { background-color: #FFECB0;}
+.gwt-MenuBar { background-color: #FFECB0;}
+.gwt-StackPanel .gwt-StackPanelItem { background-color: #FFECB0;}
+.gwt-TabBar .gwt-TabBarItem { background-color: #FFECB0;}
+.gwt-TabBar .gwt-TabBarItem-selected { background: transparent;}
+.x-panel-header { background: #FFECB0;}
+li.x-menu-item-active { background:#FFECB0 none repeat scroll 0 0;}
+.x-btn button { color: #990000;}
+.x-btn-over button { color: #212121;}
+.x-toolbar .x-btn-over button { color: #212121;}
+.x-tree-node .x-tree-selected { background-color: #FFECB0;}
+.x-window-tc { background: #990000;}
+.x-window-tl { background: #990000;}
+.x-window-tr { background: #990000;}
+.x-window-bl { background: #990000;}
+.x-window-br { background: #990000;}
+.x-window-footer { border-bottom-color: #990000;}
+.x-window-ml { background: #990000;}
+.x-window-mr { background: #990000;}
+.x-window-maximized .x-window-tc { background: #990000;}
+.x-panel-nofooter .x-panel-bc, .x-panel-nofooter .x-window-bc { background: #990000;}
+body .x-grid3 .x-grid3-row-selected { border: 1px solid #990000; background: #FFECB0 !important;}
+.labkey-error-body { background-color: #EEEBE0;}
+td.labkey-tab, .labkey-tab { background-color: #FFECB0; color: #990000;}
+.labkey-tab a { background-color: #FFECB0; color: #990000;}
+.labkey-tab a:hover { background-color: #FFECB0;}
+ul.x-tab-strip-top li { background-color: #FFECB0;}
+.x-tab-strip span.x-tab-strip-text { color: #990000;}
+li.labkey-tab-inactive a { background-color: #EEEBE0;}
+.x-grid3-hd-inner { color: #990000;}
+.x-toolbar { background: #FFECB0;}
+.labkey-fullscreen-wizard-steps { background-color: #EEEBE0;}
+.labkey-fullscreen-wizard-background { background-color: #EEEBE0;}
+.labkey-ancillary-wizard-background { background-color: #FFECB0;}
+.tool-icon a, .tool-icon a:visited { color : #990000}
+.tool-icon:hover img { cursor: pointer; background: rgb(153, 0, 0); background: rgba(153, 0, 0, 1.0); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff990000, endColorstr=#ff990000); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff990000, endColorstr=#ff990000)";}
+.tool-icon img { border: none; width: 64px; height: 64px; background: rgb(153, 0, 0); background: rgba(153, 0, 0, 0.7); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2990000, endColorstr=#b2990000); -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#b2990000, endColorstr=#b2990000)";}
+.study-schedule-container .x4-reset .x4-grid-header-ct { background-color: #FFECB0;}
+.participant-filter-panel div.x4-panel-header { background-color: #EEEBE0 !important;}
+.ext-el-mask-msg, .ext-el-mask-msg div { border-color: #EEEBE0;}
+.ext-el-mask-msg { background-color: #EEEBE0; background-image: none;}

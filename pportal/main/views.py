@@ -17,7 +17,11 @@ def home(request):
     if request.user.is_staff:
         return render(request, 'admin_landing.html', {})
     else:
-        return render(request, 'participant_landing.html', {})
+        return render(request, 'participant_landing.html', {
+                'study': Study.objects.get(identifier=request.user.get_profile().study_name).name,
+                'fname': request.user.first_name,
+                'username': request.user.username,
+            })
 
 @login_required
 def manage_users(request):
