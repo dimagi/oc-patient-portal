@@ -114,6 +114,12 @@ def patient_form_play(request, form_id, ordinal, subj_id=None):
             }, instance)
         util.submit(odm)
 
+        cl = CompletionLog()
+        cl.crf_id = form_id
+        cl.ordinal = ordinal or 0
+        cl.subject_oid = subj_id
+        cl.save()
+
         return redirect(home)
 
     return enter_form(request,

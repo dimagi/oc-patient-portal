@@ -43,3 +43,9 @@ class UserProfile(models.Model):
     display_name = models.CharField(max_length=50)
     subject_id = models.CharField(max_length=50)
     study_name = models.CharField(max_length=50)
+
+class CompletionLog(models.Model):
+    crf = models.ForeignKey(CRF)
+    ordinal = models.IntegerField()
+    subject_oid = models.CharField(max_length=50)
+    complete_on = models.DateTimeField(auto_now_add=True)
