@@ -138,16 +138,23 @@ def get_subject_schedule(subject_id, study_id):
             if ordinal:
                 ordinal = int(ordinal)
 
+            # hack: treat this as a due date for demo purposes
+            start_date = sed.attrib.get(_('StartDate', 'oc'))
+            if start_date:
+                due = datetime.strptime(start_date, '%Y-%m-%d').date()
+            else:
+                due = date.today() + timedelta(days=3)
+
             for fd in sed.findall(_('FormData')):
                 form_oid = fd.attrib['FormOID']
                 status = fd.attrib[_('Status', 'oc')]
 
                 if status == 'not started':
-                    yield {'form_oid': form_oid, 'event_oid': event_oid, 'ordinal': ordinal}
+                    yield {'form_oid': form_oid, 'event_oid': event_oid, 'ordinal': ordinal, 'due': due.strftime('%Y-%m-%d')}
 
     return {
         'subject_oid': subj_oid,
-        'upcoming': list(crfs()),
+        'upcoming': sorted(list(crfs()), key=lambda c: c['due']),
     }
 
 def generate_submit_payload(context, xfinst):

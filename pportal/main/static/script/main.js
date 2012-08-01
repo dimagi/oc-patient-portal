@@ -125,6 +125,7 @@ function SubjectEventModel(data) {
     this.event_ordinal = ko.observable(data.ordinal);
     this.form_name = ko.observable(data.form_name);
     this.form_id = ko.observable(data.form_id);
+    this.due = ko.observable(data.due);
 }
 
 function StudiesViewModel() {
