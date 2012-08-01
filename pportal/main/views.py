@@ -17,11 +17,7 @@ def home(request):
     if request.user.is_staff:
         return render(request, 'admin_landing.html', {})
     else:
-        return render(request, 'participant_landing.html', {
-                'study': Study.objects.get(identifier=request.user.get_profile().study_name).name,
-                'fname': request.user.first_name,
-                'username': request.user.username,
-            })
+        return patient_landing(request, request.user)
 
 @login_required
 def manage_users(request):
@@ -42,7 +38,11 @@ def manage_forms(request):
         })
 
 
-def patient_landing(request, subj_id, study_name):
+def patient_landing(request, user):
+    subj_id = user.get_profile().subject_id
+    study_name = user.get_profile().study_name
+    study_displayname = Study.objects.get(identifier=study_name).name
+
     sched_context = util.get_subject_schedule(subj_id, study_name)
 
     for u in sched_context['upcoming']:
@@ -55,7 +55,10 @@ def patient_landing(request, subj_id, study_name):
                 'form_id': form.id,
             })
 
-    return render(request, 'patient.html', {
+    return render(request, 'participant_landing.html', {
+            'study': study_displayname,
+            'fname': user.first_name,
+            'username': user.username,
             'subject_id': subj_id,
             'context': json.dumps(sched_context),
         })

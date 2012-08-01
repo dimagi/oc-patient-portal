@@ -4,6 +4,10 @@
 
   <title>Participant Portal: Home ({{ study }})</title>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
+  <script src="{{STATIC_URL}}script/main.js"></script>
+
   <link rel="shortcut icon" href=
   "http://localhost:8080/labkey/favicon.image?revision=6" />
   <link rel="icon" href="http://localhost:8080/labkey/favicon.image?revision=6" />
@@ -352,81 +356,47 @@ LABKEY.init(args);
                           <!--wiki-->
 
                           <div class="labkey-wiki">
-                            <table style="width: 650px; height: 200px;">
-                              <tbody data-bind="foreach: upcoming">
-                                <tr>
-                                  <td data-bind="text: event_name">
-                                  <strong>Event</strong></td>
 
-                                  <td data-bind=
-                                  "text: (event_ordinal() ? event_ordinal() : '&#226;&#8364;&#8221;')">
-                                  <strong>Visit #</strong></td>
 
-                                  <td data-bind="text: form_name">
-                                  <strong>Form</strong></td>
 
-                                  <td><strong>Status</strong></td>
-                                </tr>
+<style>
 
-                                <tr>
-                                  <td data-bind="text: event_name">Randomization</td>
+th {
+  text-align: left;
+}
 
-                                  <td data-bind=
-                                  "text: (event_ordinal() ? event_ordinal() : '&#226;&#8364;&#8221;')">
-                                  &#226;&#8364;&#8221;</td>
+#schedule td {
+  padding: .5em 0;
+}
 
-                                  <td data-bind="text: form_name"><a href=
-                                  "http://jikan.eclinicalhosting.com:8000/formplay/SS_CALTEST/10/0">
-                                  KW Vital Signs (FULL) - 1</a></td>
-                                  <!-- todo: this url construction is a little out of hand -->
+</style>
 
-                                  <td>Please complete by August 1, 2012</td>
-                                </tr>
 
-                                <tr>
-                                  <td data-bind="text: event_name">Treatment Visit</td>
 
-                                  <td data-bind=
-                                  "text: (event_ordinal() ? event_ordinal() : '&#226;&#8364;&#8221;')">
-                                  1</td>
+<table id="schedule" style="width: 650px;">
+<thead>
+<!--<td>Study</td>-->
+<th>Event</th>
+<th>Visit #</th>
+<th>Form</th>
+<th>Status</th>
+</thead>
+<tbody data-bind="foreach: upcoming">
+<tr>
+<!--<td data-bind="text: study_name"></td>-->
+<td data-bind="text: event_name"></td>
+<td data-bind="text: (event_ordinal() ? event_ordinal() : '&mdash;')"></td>
+<!-- todo: this url construction is a little out of hand -->
+<td><a data-bind="attr: { href: '/formplay/' + $parent.subject_oid() + '/' + form_id() + '/' + (event_ordinal() || 0) }, text: form_name"></a></td>
+<td>Please complete by asdfasdf</td>
+</tr>
+</tbody>
+</table>
+<div class="empty" style="font-style: italic; margin: 2em 2em;" data-bind="visible: upcoming().length == 0">There is nothing currently scheduled for you to fill out</div>
 
-                                  <td data-bind="text: form_name"><a href=
-                                  "http://jikan.eclinicalhosting.com:8000/formplay/SS_CALTEST/13/0">
-                                  KW Vital Signs (FULL) - 1</a></td>
-                                  <!-- todo: this url construction is a little out of hand -->
 
-                                  <td>Please complete by September 1, 2012</td>
-                                </tr>
 
-                                <tr>
-                                  <td data-bind="text: event_name">Treatment Visit</td>
 
-                                  <td data-bind=
-                                  "text: (event_ordinal() ? event_ordinal() : '&#226;&#8364;&#8221;')">
-                                  2</td>
-
-                                  <td data-bind="text: form_name">RVQOL-044a-PHQ-8-PT -
-                                  v1.0</td>
-                                  <!-- todo: this url construction is a little out of hand -->
-
-                                  <td>Done</td>
-                                </tr>
-
-                                <tr>
-                                  <td data-bind="text: event_name">Follow up visit 1</td>
-
-                                  <td data-bind=
-                                  "text: (event_ordinal() ? event_ordinal() : '&#226;&#8364;&#8221;')">
-                                  1</td>
-
-                                  <td data-bind="text: form_name">RVQOL_044a_PHQ_PT_8 -
-                                  v1.0</td>
-                                  <!-- todo: this url construction is a little out of hand -->
-
-                                  <td>Done</td>
-                                </tr>
-                              </tbody>
-                            </table>
 
                             <p>Forms that are in need of completion are shown as links.
                             Click on the name of the form to enter information.</p>
@@ -530,5 +500,29 @@ LABKEY.init(args);
   <form>
     <input id="seleniumExtReady" name="seleniumExtReady" type="hidden" />
   </form>
+
+
+
+
+
+<script>
+
+if (!window.console) {
+    window.console = {
+        log: function () { }
+    };
+}
+
+CONTEXT = {{ context|safe }};
+
+$(document).ready(function() {
+        init_patient(CONTEXT);
+    });
+
+</script>
+
+
+
+
 </body>
 </html>
