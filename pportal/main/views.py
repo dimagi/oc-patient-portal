@@ -134,3 +134,41 @@ def gen_reg_code(request):
     pending_reg.save()
 
     return HttpResponse(json.dumps({'code': code}), 'text/json')
+
+def validate_reg_code(request):
+    code = request.GET.get('code')
+
+    #normalize
+    code = ''.join(c for c in code if c in '0123456789')
+
+    try:
+        pend = PendingRegistration.objects.get(reg_code=code)
+        status = 'valid'
+    except PendingRegistration.DoesNotExist:
+        status = 'invalid'
+
+    return HttpResponse(json.dumps({'status': status, 'code': code}), 'text/json')
+    
+# we should be doing validation!
+def register_user(request):
+    u = User()
+    u.email = request.POST.get('email').strip()
+    u.username = u.email
+    u.first_name = request.POST.get('fname').strip()
+    u.last_name = request.POST.get('lname').strip()
+    u.set_password(request.POST.get('pass'))
+
+    pend = PendingRegistration.objects.get(reg_code = request.POST.get('regcode'))
+    up = UserProfile()
+    up.user = u
+    up.subject_id = pend.subj_id
+    up.study_name = pend.study_name
+    up.full_name = '%s %s' % (u.first_name, u.last_name)
+    up.display_name = u.first_name
+
+    # transaction?
+    u.save()
+    up.save()
+    pend.delete()
+
+    return HttpResponseRedirect('/')

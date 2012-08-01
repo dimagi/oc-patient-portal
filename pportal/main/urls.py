@@ -17,4 +17,6 @@ urlpatterns = patterns('pportal.main.views',
     (r'^debug/clearall$', 'clear_all'),
     (r'^debug/clearstudy/(?P<study_id>.*)$', 'clear_study'),
     (r'^register/newcode/$', 'gen_reg_code'),
+    (r'^register/validatecode/$', 'validate_reg_code'),
+    (r'^register/newuser/$', 'register_user'),
 )

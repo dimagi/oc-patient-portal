@@ -1,6 +1,9 @@
 <html>
 <head>
 <title>Participant Portal: Log In</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+<script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/base.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}admin/css/login.css" />
 </head>
@@ -16,52 +19,126 @@ body.login {
 </style>
 
 <div id="container">
-    <div id="header">
-        <div id="branding">
-        
-<h1 id="site-name">Welcome to Participant Portal!</h1>
-
-        </div>
+  <div id="header">
+    <div id="branding">
+      <h1 id="site-name">Welcome to Participant Portal!</h1>
     </div>
+  </div>
 
-    <div id="content" class="colM">
-        
+  <div id="content" class="colM">
+    <div id="login">
       <p style="margin-top: 1em; font-style: italic;">Please log in&hellip;</p>
 
 {% if form.errors %}
-        <p class="errornote">Invalid username/password!</p>
+      <p class="errornote">Invalid username/password!</p>
 {% endif %}
 
-<div id="content-main">
-<form  method="post" action="{% url django.contrib.auth.views.login %}" id="login-form">
-  {% csrf_token %}
+      <div id="content-main">
+	<form  method="post" action="{% url django.contrib.auth.views.login %}" id="login-form">
+	  {% csrf_token %}
 
-  <div class="form-row">
-    {{ form.username.label_tag }} {{ form.username }}
+	  <div class="form-row">
+	    <label for="id_username">Email Address</label> {{ form.username }}
+	  </div>
+
+	  <div class="form-row">
+	    {{ form.password.label_tag }} {{ form.password }}
+	  </div>
+
+	  <input type="hidden" name="next" value="{{ next }}" />
+
+	  <div class="submit-row">
+	    <label>&nbsp;</label><input type="submit" value="Log in" />
+	  </div>
+	</form>
+
+	<p style="margin-top: 1.3em;"><a href="#">Forgot your password?</a></p>
+	<p><a href="#" id="enroll">Don't have a login yet? Enroll in participant portal</a></p>
+
+      </div>
+    </div>
+
+    <div id="register" style="display: none;">
+      
+      <form id="reg_code" action="#" method="post">
+	Enter the registration code given to you by the study staff:
+        <p id="badcode" class="errornote" style="display: none;">Registration code is not valid!</p>
+	<div style="text-align: center;">
+	  <input id="code" maxlength="14" style="margin: auto; margin-top: 1em; text-align: center; font-weight: bold; font-size: 200%; width: 12em;"></input>
+	  <input type="submit" value="Register"></input>
+	</div>
+      </form>
+
+    </div>
+
+    <div id="regdetail" style="display: none;">
+      <div class="colM">
+	<form id="reg_detail" action="/register/newuser/" method="post">
+	  <p>Registration code accepted! We just need a little more information&hellip;</p>
+	  {% csrf_token %}
+	  <input type="hidden" id="submitcode" name="regcode" />
+
+	  <div class="form-row">
+	    <label for="fname">First Name</label> <input id="fname" type="text" name="fname" maxlength="30" />
+	  </div>
+	  <div class="form-row">
+	    <label for="lname">Last Name</label> <input id="lname" type="text" name="lname" maxlength="30" />
+	  </div>
+	  <div class="form-row">
+	    <label for="email">Email Address</label> <input id="email" type="text" name="email" maxlength="30" />
+	  </div>
+	  <div class="form-row">
+	    <label for="pass">Password</label> <input id="pass" type="password" name="pass" maxlength="30" />
+	  </div>
+	  <div class="form-row">
+	    <label for="pass2">Confirm Password</label> <input id="pass2" type="password" name="pass2" maxlength="30" />
+	  </div>
+
+	  <div class="submit-row">
+	    <label>&nbsp;</label><input type="submit" value="Complete Registration" />
+	  </div>
+	</form>
+      </div>
+    </div>
+
   </div>
 
-  <div class="form-row">
-    {{ form.password.label_tag }} {{ form.password }}
-  </div>
-
-  <input type="hidden" name="next" value="{{ next }}" />
-
-  <div class="submit-row">
-    <label>&nbsp;</label><input type="submit" value="Log in" />
-  </div>
-</form>
-
-<p style="margin-top: 1.3em;"><a href="#">Forgot your password?</a></p>
-<p><a href="#">Don't have a login yet? Enroll in participant portal</a></p>
 
 <script type="text/javascript">
-document.getElementById('id_username').focus()
+  $(document).ready(function() {
+      $('#id_username').focus();
+
+      $('#enroll').click(function() {
+          $('#login').slideUp();
+          $('#register').slideDown();
+          $('#code').focus();
+          return false;
+        });
+
+      $('#reg_code').submit(function() {
+          var code = $.trim($('#code').val());
+          if (code == null || code == '') {
+            return false;
+          }
+
+          $.get('/register/validatecode', {code: code}, function(data) {
+              if (data.status == 'valid') {
+                $('#badcode').hide();
+                $('#submitcode').val(data.code);
+                $('#register').slideUp();
+                $('#regdetail').slideDown();
+                $('#fname').focus();
+              } else {
+                $('#badcode').show();
+              }
+            });
+          return false;
+        });
+    });
 </script>
-</div>
         
-        <br class="clear" />
-    </div>
-    <div id="footer"></div>
+  <br class="clear" />
+  <div id="footer"></div>
 </div>
 </body>
 </html>

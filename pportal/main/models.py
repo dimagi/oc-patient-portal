@@ -39,7 +39,7 @@ class PendingRegistration(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
-    #full_name = models.CharField(max_length=200)
-    #display_name = models.CharField(max_length=50)
+    full_name = models.CharField(max_length=200)
+    display_name = models.CharField(max_length=50)
     subject_id = models.CharField(max_length=50)
     study_name = models.CharField(max_length=50)
