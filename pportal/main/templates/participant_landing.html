@@ -388,7 +388,7 @@ th {
 <td data-bind="text: event_name"></td>
 <td data-bind="text: (event_ordinal() ? event_ordinal() : '&mdash;')"></td>
 <!-- todo: this url construction is a little out of hand -->
-<td><a data-bind="attr: { href: '/formplay/' + $parent.subject_oid() + '/' + form_id() + '/' + (event_ordinal() || 0) }, text: form_name"></a></td>
+<td><a data-bind="attr: { href: '/formplay/' + form_id() + '/' + (event_ordinal() || 0) }, text: form_name"></a></td>
 <td>Please complete by <span style="white-space: nowrap;" data-bind="text: Date.parse(due()).toString('MMM. d, yyyy')"></span> <span style="font-weight: bold; color: red;" data-bind="visible: Date.parse(due()).compareTo(Date.today()) < 0">overdue!</span> <span style="font-weight: bold; color: lightblue; white-space: nowrap;" data-bind="visible: Date.parse(due()).equals(Date.today())">due today!</span></td>
 </tr>
 </tbody>

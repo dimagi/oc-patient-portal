@@ -55,6 +55,7 @@ def patient_landing(request, user):
                 'form_id': form.id,
             })
 
+    request.session['subject_oid'] = sched_context['subject_oid']
     return render(request, 'participant_landing.html', {
             'study': study_displayname,
             'fname': user.first_name,
@@ -72,8 +73,12 @@ def form_pull(request, study_id):
     payload = {'study_data': study_metadata, 'errors': errors}
     return HttpResponse(json.dumps(payload), 'text/json')
 
+@login_required
 @csrf_exempt
-def form_play(request, form_id):
+def debug_form_play(request, form_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('dev access required')
+
     def onsubmit(xform, instance):
         odm = util.generate_submit_payload({
                 'subject_id': 'SS_123456',
@@ -86,8 +91,18 @@ def form_play(request, form_id):
                       input_mode='full',
                       onsubmit=onsubmit)
 
+@login_required
 @csrf_exempt
-def patient_form_play(request, subj_id, form_id, ordinal):
+def patient_form_play(request, form_id, ordinal, subj_id=None):
+    if subj_id:
+        # only superuser can provide arbitrary subject ids
+        if not request.user.is_superuser:
+            return HttpResponseForbidden('dev access required')
+    else:
+        subj_id = request.session.get('subject_oid')
+        if not subj_id:
+            assert False, 'subject OID not in session'
+
     ordinal = int(ordinal)
     if not ordinal:
         ordinal = None
@@ -99,9 +114,7 @@ def patient_form_play(request, subj_id, form_id, ordinal):
             }, instance)
         util.submit(odm)
 
-        # kind of a hack to get the redirect
-        study = Study.objects.get(oid=util._instance_metadata(instance)['study'])
-        return redirect(patient_landing, subj_id[len('SS_'):], study.identifier)
+        return redirect(home)
 
     return enter_form(request,
                       xform_id=form_id,
