@@ -126,6 +126,17 @@ function SubjectEventModel(data) {
     this.form_name = ko.observable(data.form_name);
     this.form_id = ko.observable(data.form_id);
     this.due = ko.observable(data.due);
+    this.completed = ko.observable(data.completed_on);
+
+    this.to_date = function(obs) {
+	return ko.computed(function() {
+		var literal = this[obs]();
+		return (literal ? Date.parse(literal) : Date.parse('2000-01-01')); // assumed the default will never be shown
+	    }, this);
+    };
+
+    this.due_ = this.to_date('due');
+    this.completed_ = this.to_date('completed');
 }
 
 function StudiesViewModel() {
@@ -194,15 +205,18 @@ function StudySubjectsViewModel() {
 
 function SubjectScheduleViewModel(data) {
     this.subject_oid = ko.observable(data.subject_oid);
-    this.upcoming = ko.observableArray();
+    this.schedule = ko.observableArray();
 
     this.load = function(data) {
-	var mapped = $.map(data, function(e) {
+	var mapped = $.map(data.upcoming, function(e) {
 		return new SubjectEventModel(e);
 	    });
-	this.upcoming(mapped);
+	$.merge(mapped, $.map(data.recently_completed, function(e) {
+		    return new SubjectEventModel(e);
+		}));
+	this.schedule(mapped);
     }
-    this.load(data.upcoming);
+    this.load(data);
 }
 
 function clearstudy(data) {

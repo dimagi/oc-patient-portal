@@ -370,30 +370,43 @@ th {
   padding: .5em 0;
 }
 
+tr.compl td {
+  color: #666;
+  font-style: italic;
+}
+
 </style>
 
 
 
 <table id="schedule" style="width: 750px;">
-<thead>
-<!--<td>Study</td>-->
-<th>Event</th>
-<th>Visit #</th>
-<th>Form</th>
-<th>Status</th>
-</thead>
-<tbody data-bind="foreach: upcoming">
-<tr>
-<!--<td data-bind="text: study_name"></td>-->
-<td data-bind="text: event_name"></td>
-<td data-bind="text: (event_ordinal() ? event_ordinal() : '&mdash;')"></td>
-<!-- todo: this url construction is a little out of hand -->
-<td><a data-bind="attr: { href: '/formplay/' + form_id() + '/' + (event_ordinal() || 0) }, text: form_name"></a></td>
-<td>Please complete by <span style="white-space: nowrap;" data-bind="text: Date.parse(due()).toString('MMM. d, yyyy')"></span> <span style="font-weight: bold; color: red;" data-bind="visible: Date.parse(due()).compareTo(Date.today()) < 0">overdue!</span> <span style="font-weight: bold; color: lightblue; white-space: nowrap;" data-bind="visible: Date.parse(due()).equals(Date.today())">due today!</span></td>
-</tr>
-</tbody>
+  <thead>
+    <!--<td>Study</td>-->
+    <th>Event</th>
+    <th>Visit #</th>
+    <th>Form</th>
+    <th>Status</th>
+  </thead>
+  <tbody data-bind="foreach: schedule">
+    <tr data-bind="css: { compl: completed }">
+      <!--<td data-bind="text: study_name"></td>-->
+      <td data-bind="text: event_name"></td>
+      <td data-bind="text: (event_ordinal() ? event_ordinal() : '&mdash;')"></td>
+      <!-- todo: this url construction is a little out of hand -->
+      <td>
+	<a data-bind="visible: !completed(), attr: { href: '/formplay/' + form_id() + '/' + (event_ordinal() || 0) }, text: form_name"></a>
+	<span data-bind="visible: completed, text: form_name"></span>  
+      </td>
+      <td>
+	<div data-bind="visible: !completed()">
+	  Please complete by <span style="white-space: nowrap;" data-bind="text: due_().toString('MMM. d, yyyy')"></span> <span style="font-weight: bold; color: red;" data-bind="visible: due_().compareTo(Date.today()) < 0">overdue!</span> <span style="font-weight: bold; color: lightblue; white-space: nowrap;" data-bind="visible: due_().equals(Date.today())">due today!</span>
+	</div>
+	<span data-bind="visible: completed">Completed on <span data-bind="text: completed_().toString('MMM. d, yyyy')"></span></span>
+      </td>
+    </tr>
+  </tbody>
 </table>
-<div class="empty" style="font-style: italic; margin: 2em 2em;" data-bind="visible: upcoming().length == 0">There is nothing currently scheduled for you to fill out</div>
+<div class="empty" style="font-style: italic; margin: 2em 2em;" data-bind="visible: schedule().length == 0">There is nothing currently scheduled for you to fill out</div>
 
 
 

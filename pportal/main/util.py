@@ -3,10 +3,10 @@ import crf_to_xform as convert
 import xforminst_to_odm as odm
 from django.conf import settings
 import ocxforms.util as u
-from main.models import Study, StudyEvent, CRF, PendingRegistration, UserProfile
+from main.models import *
 import collections
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from ocxforms.crf_to_xform import _
 from xml.etree import ElementTree as et
 import random
@@ -156,6 +156,21 @@ def get_subject_schedule(subject_id, study_id):
         'subject_oid': subj_oid,
         'upcoming': sorted(list(crfs()), key=lambda c: c['due']),
     }
+
+def get_recently_completed(subject_oid, window=timedelta(days=2)):
+    compl = CompletionLog.objects.select_related().filter(subject_oid=subject_oid, completed_on__gte=datetime.now() - window)
+    def mk_compl(c):
+        return {
+            'form_id': c.crf.id,
+            'form_name': c.crf.name,
+            'form_oid': c.crf.oid,
+            'ordinal': c.ordinal if c.ordinal else None,
+            'completed_on': c.completed_on.strftime('%Y-%m-%d %H:%M:%S'),
+            'event_oid': c.crf.event.oid,
+            'event_name': c.crf.event.name,
+            'study_name': c.crf.event.study.name,
+        }
+    return sorted(list(mk_compl(c) for c in compl), key=lambda c: c['completed_on'])
 
 def generate_submit_payload(context, xfinst):
     return odm.process_instance(context, xfinst, None).get('odm')

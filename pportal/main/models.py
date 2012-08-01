@@ -48,4 +48,4 @@ class CompletionLog(models.Model):
     crf = models.ForeignKey(CRF)
     ordinal = models.IntegerField()
     subject_oid = models.CharField(max_length=50)
-    complete_on = models.DateTimeField(auto_now_add=True)
+    completed_on = models.DateTimeField(auto_now_add=True, db_index=True) # ideally want a multi-colum index on (subject_id, completed_on)

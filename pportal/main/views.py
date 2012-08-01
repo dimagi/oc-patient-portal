@@ -55,6 +55,8 @@ def patient_landing(request, user):
                 'form_id': form.id,
             })
 
+    sched_context['recently_completed'] = util.get_recently_completed(sched_context['subject_oid'])
+
     request.session['subject_oid'] = sched_context['subject_oid']
     return render(request, 'participant_landing.html', {
             'study': study_displayname,
