@@ -120,3 +120,15 @@ def clear_study(request, study_id):
     CRF.objects.filter(event__study__id=study_id).delete()
     StudyEvent.objects.filter(study__id=study_id).delete()
     return HttpResponse()
+
+@csrf_exempt
+def gen_reg_code(request):
+    subject_id = request.POST.get('subj_id')
+    code = util.gen_reg_code()
+
+    pending_reg = PendingRegistration()
+    pending_reg.subj_id = subject_id
+    pending_reg.reg_code = code
+    pending_reg.save()
+
+    return HttpResponse(json.dumps({'code': code}), 'text/json')

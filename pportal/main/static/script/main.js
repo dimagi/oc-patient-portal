@@ -89,8 +89,26 @@ function StudyModel(data) {
     this.load_metadata(data.events);
 }
 
+function fmt_reg_code(code) {
+    return code.substring(0, 4) + ' ' + code.substring(4, 8) + ' ' + code.substring(8, 12);
+}
+
 function SubjectModel(data) {
     this.id = ko.observable(data.id);
+
+    this.register = function() {
+	$('#subj_id').text(this.id());
+	$('#reg_code').html('&mdash;');
+	$('#regpopup').dialog({
+		modal: true,
+		resizable: false,
+                width: 600,
+	    });
+
+	$.post('/register/newcode/', {subj_id: this.id()}, function(data) {
+		$('#reg_code').text(fmt_reg_code(data.code));
+	    });
+    }
 }
 
 function SubjectEventModel(data) {
@@ -154,6 +172,11 @@ function StudySubjectsViewModel() {
 	url = url.replace('--studyname--', this.selected_study());
 	window.location.href = url;
     }
+
+    var model = this;
+    this.selectStudy = function(study) {
+	model.selected_study(study.tag());
+    };
 }
 
 function SubjectScheduleViewModel(data) {

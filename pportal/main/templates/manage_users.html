@@ -3,12 +3,14 @@
 <title>User management</title>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
 <script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
 
 <script src="{{STATIC_URL}}script/main.js"></script>
 
 <link rel="stylesheet" href="{{STATIC_URL}}style/main.css" />
 <link rel="stylesheet" href="{{STATIC_URL}}style/admin.css" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" />
 
 </head>
 <body>
@@ -19,16 +21,16 @@
   -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
   -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
   box-shadow:inset 0px 1px 0px 0px #ffffff;
-  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
-  background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
-  background-color:#ededed;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ddd), color-stop(1, #ccc) );
+  background:-moz-linear-gradient( center top, #ddd 5%, #ccc 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddd', endColorstr='#ccc');
+  background-color:#ddd;
   -moz-border-radius:6px;
   -webkit-border-radius:6px;
   border-radius:6px;
   border:1px solid #dcdcdc;
   display:inline-block;
-  color:#777777;
+  color:#444;
   font-family:arial;
   font-size:15px;
   font-weight:bold;
@@ -45,36 +47,59 @@
 }
 
 .active {
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #edd), color-stop(1, #ecc) );
+  background:-moz-linear-gradient( center top, #edd 5%, #ecc 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#edd', endColorstr='#ecc');
+}
 
+.active:hover {
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #edd), color-stop(1, #ecc) );
+  background:-moz-linear-gradient( center top, #edd 5%, #ecc 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#edd', endColorstr='#ecc');
 }
 
 </style>
 
-<h1>Manage Users</h1>
+<h1>Manage Participants</h1>
 <hr>
 
 <div style="float: left; padding-right: 50px;">
-<h3>1. select a study</h3>
-<div data-bind="foreach: studies">
-<div>
-<a href="#" class="button" data-bind="text: name"></a><!--input data-bind="attr: { id: 'study' + $index(), value: tag }, checked: $parent.selected_study" type="radio" name="study" /> <label data-bind="attr: { for: 'study' + $index() }, text: name"></label>-->
-</div>
-</div>
+  <h3>Studies:</h3>
+  <div data-bind="foreach: studies">
+    <div>
+      <a href="#" class="button" data-bind="text: name, click: $root.selectStudy, css: { active: $root.selected_study() == tag() }"></a>
+    </div>
+  </div>
 </div>
 
-<div data-bind="visible: selected_study" style="float: left; padding-right: 50px;">
-<h3>2. select subject</h3>
-<div data-bind="visible: loading_subjects" style="font-style: italic;">loading subjects&hellip;</div>
-<div data-bind="foreach: subjects">
-<div>
-<input data-bind="attr: { id: 'subj' + $index(), value: id }, checked: $parent.selected_subject" type="radio" name="subject" /> <label data-bind="attr: { for: 'subj' + $index() }, text: id"></label>
-</div>
-</div>
+<div style="float: left; padding-right: 50px;">
+  <h3>Participants:</h3>
+  <div style="font-style: italic; font-size: 90%;" data-bind="visible: !selected_study()">select a study&hellip;</div>
+  <div data-bind="visible: selected_study">
+    <div data-bind="visible: loading_subjects" style="font-style: italic; font-size: 90%;">loading participants&hellip;</div>
+    <table>
+      <tbody data-bind="foreach: subjects">
+	<tr>
+	  <td data-bind="text: id"></td>
+	  <!-- $parent.selected_subject -->
+	  <td>
+	    <div><a href="#" style="font-size: 80%;" data-bind="click: register">(register)</a></div>
+	  </td>
+	  <!-- view landing page (for testing)? -->
+	</tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div data-bind="visible: selected_subject, click: go" style="float: left">
 <h3>&nbsp;</h3>
 <button>Go</button>
+</div>
+
+<div id="regpopup" title="Registration Code" style="display: none;">
+<p>Provide the following registration code to subject <span style="font-weight: bold;" id="subj_id"></span></p>
+<div id="reg_code" style="text-align: center; font-weight: bold; font-size: 200%; margin-bottom: .5em;"></div>
 </div>
 
 <script>

@@ -30,3 +30,6 @@ class CRF(XForm):
     def identifiers(self):
         return parse_xmlns(self.namespace)
 
+class PendingRegistration(models.Model):
+    subj_id = models.CharField(max_length=50, primary_key=True)
+    reg_code = models.CharField(max_length=50)

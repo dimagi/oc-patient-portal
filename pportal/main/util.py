@@ -9,6 +9,8 @@ import logging
 from datetime import date, datetime
 from ocxforms.crf_to_xform import _
 from xml.etree import ElementTree as et
+import random
+import hashlib
 
 def get_studies():
     conn = ws.connect(settings.WEBSERVICE_URL, ws.STUDY_WSDL)
@@ -177,6 +179,15 @@ class WSDL(object):
 
 
 
+
+
+
+def gen_reg_code():
+    TOTAL_LEN = 12
+    CHKSUM_LEN = 2
+    code = ''.join(str(random.randint(0, 9)) for i in range(TOTAL_LEN - CHKSUM_LEN))
+    checksum = int(hashlib.sha1(code).hexdigest()[-8:], 16) % 10**CHKSUM_LEN
+    return code + ('%0*d' % (CHKSUM_LEN, checksum))
 
 
 def map_reduce(data, emitfunc=lambda rec: [(rec,)], reducefunc=lambda v: v):
