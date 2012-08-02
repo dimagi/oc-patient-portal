@@ -347,7 +347,7 @@ LABKEY.init(args);
                   <table name="webpart" id="webpart_28" class="labkey-wp">
                     <tbody>
                       <tr class="labkey-wp-header">
-                        <th class="labkey-wp-title-left" title="Welcome, {{ fname }}!">
+                        <th class="labkey-wp-title-left">
                         <span class="labkey-wp-title-text"></span>&nbsp;</th>
 
                         <th class="labkey-wp-title-right"></th>
@@ -414,12 +414,21 @@ PRELOADER_URL = "{% url xform_preloader %}";
 
 
 function onlanginfo(switchfunc, langs) {
+  return;
+
+/*
+  var $div = $('<div>Choose language:</div>');
+  $div.css('float', 'right');
+  $div.css('text-align', 'right');
   $.each(langs, function(i, lang) {
-      $b = $('<button />');
+      var $b = $('<div />');
+      $b.css('font-weight', 'bold');
       $b.text(lang);
       $b.click(function() { switchfunc(lang) });
-      $('#content').before($b);
+      $div.append($b);
     });
+  $('#content').before($div);
+*/
 }
 
 function onpresubmit() {
