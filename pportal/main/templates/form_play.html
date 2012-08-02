@@ -40,7 +40,8 @@ function onlanginfo(switchfunc, langs) {
 }
 
 function onpresubmit() {
-  return confirm('Submit this form finally, for all time and evermore?');
+  var text = "Final answer?\n\nYou won't be able to make any more changes after you submit.\n\nClick \"OK\" to submit, or \"Cancel\" to go back and review.";
+  return confirm(text);
 }
 
 $(document).ready(function() {
