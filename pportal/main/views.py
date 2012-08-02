@@ -96,20 +96,23 @@ def debug_form_play(request, form_id):
 @login_required
 @csrf_exempt
 def patient_form_play(request, form_id, ordinal, subj_id=None):
-    if subj_id:
-        # only superuser can provide arbitrary subject ids
-        if not request.user.is_superuser:
-            return HttpResponseForbidden('dev access required')
-    else:
-        subj_id = request.session.get('subject_oid')
-        if not subj_id:
-            assert False, 'subject OID not in session'
+
+    xform = CRF.objects.get(id=form_id)
 
     ordinal = int(ordinal)
     if not ordinal:
         ordinal = None
 
-    def onsubmit(xform, instance):
+    def onsubmit(subj_id, instance):
+        if subj_id:
+            # only superuser can provide arbitrary subject ids
+            if not request.user.is_superuser:
+                return HttpResponseForbidden('dev access required')
+        else:
+            subj_id = request.session.get('subject_oid')
+            if not subj_id:
+                assert False, 'subject OID not in session'
+
         odm = util.generate_submit_payload({
                 'subject_id': subj_id,
                 'event_ordinal': ordinal,
@@ -124,10 +127,16 @@ def patient_form_play(request, form_id, ordinal, subj_id=None):
 
         return redirect(home)
 
-    return enter_form(request,
-                      xform_id=form_id,
-                      input_mode='full',
-                      onsubmit=onsubmit)
+    if request.method == "POST":
+        if request.POST.get('type') == 'form-complete':
+            return onsubmit(subj_id, request.POST.get('output'))
+        else:
+            assert False, 'form complete flag not set'
+
+    return render(request, 'form_play.html', {
+            'form': xform,
+            'session_data': json.dumps({}),
+        })
 
 def get_studies(request):
     util.get_studies()
