@@ -133,9 +133,15 @@ def patient_form_play(request, form_id, ordinal, subj_id=None):
         else:
             assert False, 'form complete flag not set'
 
+    user = request.user
+    study_name = user.get_profile().study_name
+    study_displayname = Study.objects.get(identifier=study_name).name
+
     return render(request, 'form_play.html', {
             'form': xform,
             'session_data': json.dumps({}),
+            'study': study_displayname,
+            'username': user.username,
         })
 
 def get_studies(request):

@@ -1,7 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<html class="ext-strict" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=us-ascii" />
+
+  <title>Participant Portal: Home ({{ study }})</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script src="{{STATIC_URL}}script/knockout-2.1.0.js"></script>
+  <script src="{{STATIC_URL}}script/date.js"></script>
+  <script src="{{STATIC_URL}}script/main.js"></script>
+
+  <link rel="shortcut icon" href=
+  "http://localhost:8080/labkey/favicon.image?revision=6" />
+  <link rel="icon" href="http://localhost:8080/labkey/favicon.image?revision=6" />
+  <link href="{{ STATIC_URL }}labkey/ext-all.css" type="text/css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}labkey/ext-madison.css" type="text/css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}labkey/stylesheet.css" type="text/css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}labkey/themeStylesheet.css" type="text/css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}labkey/printStyle.css" type="text/css" rel="stylesheet" media=
+  "print" />
+  <script src="{{ STATIC_URL }}labkey/labkey.js" type="text/javascript">
+</script>
+
+
+
+
+
 
     <script language="javascript" type="text/javascript" src="{{STATIC_URL}}formplayer/script/jquery-1.4.2.min.js"></script>
     <script language="javascript" type="text/javascript" src="{{STATIC_URL}}formplayer/script/jquery-ui.min.js"></script>
@@ -15,7 +38,367 @@
 
     <link rel="stylesheet" href="{{STATIC_URL}}formplayer/style/webforms.css">
 
-    <script language="javascript">
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+//<![CDATA[
+        var args = {
+"sharedContainer":"Shared",
+"CSRF":"9185420cec6c2219edc32b9e4ee4ff23",
+"imagePath":"/labkey/_images",
+"hash":"579481154",
+"demoMode":false,
+"serverName":"localhost",
+"extJsRoot":"ext-3.4.0",
+"project":{
+  "id":"beabf0e2-b391-102f-97c0-af20d5472a80",
+  "name":"---",
+  "path":"#"
+},
+"versionString":"12.10",
+"homeContainer":"home",
+"uuids":["16690eaf-b6f4-102f-a962-d4a1efa4a0e0","16690eb0-b6f4-102f-a962-d4a1efa4a0e0","16690eb1-b6f4-102f-a962-d4a1efa4a0e0"],
+"container":{
+  "id":"beabf0e2-b391-102f-97c0-af20d5472a80",
+  "name":"---",
+  "path":"#",
+  "type":"project"
+},
+"contextPath":"/labkey",
+"devMode":false,
+"user":{
+  "phone":null,
+  "canDelete":false,
+  "sessionid":"0F99551B88D015BF36A05A8337F0D133",
+  "isSystemAdmin":false,
+  "isGuest":false,
+  "id":1003,
+  "canDeleteOwn":false,
+  "email":"---",
+  "canUpdate":false,
+  "isAdmin":false,
+  "canInsert":false,
+  "displayName":"---",
+  "canUpdateOwn":false
+}
+};
+args.project.name = "{{ study }}";
+args.container.name = "{{ study }}";
+args.user.email = "{{ username }}";
+args.user.displayName = "{{ username }}";
+LABKEY.init(args);
+  //]]>
+  </script>
+  <script src="{{ STATIC_URL }}labkey/combinedJavascript.view" type="text/javascript">
+</script>
+  <link href="{{ STATIC_URL }}labkey/GuidedTip.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body id="bodyElement" onload="" class="labkey-theme-font-medium ext-gecko ext-gecko3">
+  <div id="helpDiv" onmouseover="mouseEnteredHelpDiv()" onmouseout="mouseExitedHelpDiv()"
+  style="display:none;">
+    <table id="helpDivTable">
+      <tbody>
+        <tr class="labkey-wp-header" width="100%">
+          <td title="Help" class="labkey-wp-title-left" nowrap="nowrap">
+            <div>
+              <span id="helpDivTitle" class="labkey-wp-title">Title</span>
+            </div>
+          </td>
+
+          <td class="labkey-wp-title-right" style=
+          "border-left: 0px none; padding-bottom: 0px;" align="right"><img alt="close"
+          src="{{ STATIC_URL }}labkey/partdelete.png" onclick="hideHelpDiv(true)" /></td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding: 5px;"><span id="helpDivBody">Body</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div><script type="text/javascript" src="{{ STATIC_URL }}labkey/GuidedTip.js">
+</script><script type="text/javascript">
+//<![CDATA[
+        LABKEY.loadedScripts('ext-3.4.0/ext-all-debug.js','ext-3.4.0/ext-all.js','clientapi/clientapi.js','clientapi/clientapi.min.js','ext-3.4.0/adapter/ext/ext-base.js','ext-3.4.0/ext-patches.js','util.js');
+        Ext.Ajax.timeout = 5 * 60 * 1000; // Default to 5 minute timeout
+  //]]>
+  </script>
+
+  <table class="labkey-main labkey-theme-font-medium" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr id="headerpanel" class="labkey-header-panel">
+        <td colspan="3">
+          <!-- HEADER -->
+
+          <div class="">
+            <div id="headerDiv">
+              <table id="headerNav" border="0" cellpadding="0" cellspacing="0" width=
+              "auto">
+                <tbody>
+                  <tr>
+                    <td style="padding-right: 1em;">
+                      <form target="_self" id="headerSearchForm" action=
+                      "/labkey/search/Default%20Study/search.view" method="get" style=
+                      "margin:0;">
+                        <table class="labkey-main-search" cellpadding="0" cellspacing=
+                        "0">
+                          <tbody>
+                            <tr>
+<!--
+                              <td id="ext-gen3"><input value="Search Participant Portal"
+                              class=
+                              " x-form-text x-form-field labkey-main-search x-form-empty-field"
+                              size="20" autocomplete="off" id="headerSearchInput" name=
+                              "q" type="text" /></td>
+
+                              <td><img src="{{ STATIC_URL }}labkey/search.png" onclick=
+                              "return submit_onClick();" /></td>
+-->
+                            </tr>
+                          </tbody>
+                        </table>
+                      </form>
+                    </td>
+
+                    <td class="labkey-main-nav" align="right" valign="top">
+                      <a class="labkey-menu-text-link" style="" href="javascript:void(0)"
+                      onclick=
+                      "if (this.className.indexOf('labkey-disabled-button') != -1) return false; showMenu(this, 'helpMenu','tr-br?');"
+                      id="helpMenuPopupLink"><span id=
+                      "helpMenuPopupText">Help</span>&nbsp;<img src=
+                      "{{ STATIC_URL }}labkey/text_link_arrow.gif" style=
+                      "position: relative; background-color: transparent; width: 10px; height: auto; top: -1px; right: 0px;" /></a><script type="text/javascript">
+//<![CDATA[
+                      Ext.onReady(function() {
+                      var oldMenu = Ext.menu.MenuMgr.get('helpMenu');
+                      if(oldMenu)
+                      {
+                      oldMenu.removeAll();
+                      Ext.menu.MenuMgr.unregister(oldMenu);
+                      }
+                      var m = new Ext.menu.Menu({cls:'extContainer',id:'helpMenu',
+                      items:[{text:'Support',href:'#',leaf:true}]}         );});
+                      //]]>
+                      </script> | <a class="labkey-menu-text-link" style="" href=
+                      "javascript:void(0)" onclick=
+                      "if (this.className.indexOf('labkey-disabled-button') != -1) return false; showMenu(this, 'userMenu','tr-br?');"
+                      id="userMenuPopupLink"><span id=
+                      "userMenuPopupText">{{ username }}</span>&nbsp;<img src=
+                      "{{ STATIC_URL }}labkey/text_link_arrow.gif" style=
+                      "position: relative; background-color: transparent; width: 10px; height: auto; top: -1px; right: 0px;" /></a><script type="text/javascript">
+//<![CDATA[
+                      Ext.onReady(function() {
+                      var oldMenu = Ext.menu.MenuMgr.get('userMenu');
+                      if(oldMenu)
+                      {
+                      oldMenu.removeAll();
+                      Ext.menu.MenuMgr.unregister(oldMenu);
+                      }
+                      var m = new Ext.menu.Menu({cls:'extContainer',id:'userMenu',
+                      items:[{text:'My Account',href:'#',leaf:true},
+                      {text:'Log out',href:'/logout/',leaf:true}]}         );});
+                      //]]>
+                      </script>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <table id="header">
+              <tbody>
+                <tr>
+                  <td class="labkey-main-icon"><a href="/"><img src=
+                  "{{ STATIC_URL }}labkey/m_logo.gif" style="margin-left: 5px;" alt="Participant Portal" /></a></td>
+
+                  <td class="labkey-main-title-area"><span><a id="labkey-main-title"
+                  class="labkey-main-title" href="/">Participant
+                  Portal</a></span></td>
+                </tr>
+              </tbody>
+            </table><script type="text/javascript">
+//<![CDATA[
+
+            var hdrSearch; // Ext.form.TextField
+            function submit_onClick()
+            {
+            if (hdrSearch && hdrSearch.el.hasClass(hdrSearch.emptyClass) && hdrSearch.el.dom.value == hdrSearch.emptyText)
+            hdrSearch.setRawValue('');
+            document.forms["headerSearchForm"].submit();
+            return true;
+            }
+            Ext.onReady(function()
+            {
+            if (Ext.isSafari || Ext.isWebKit)
+            Ext.get("headerNav").applyStyles({height:Ext.get("header").getSize().height});
+
+            var serverDescription = 'Participant Portal' || LABKEY.serverName;
+            var inputEl = Ext.get('headerSearchInput');
+            var parentEl = inputEl.parent();
+            inputEl.remove();
+            hdrSearch = new Ext.form.TextField({id:'headerSearchInput', name:'q', emptyText:'Search', cls:'labkey-main-search', focusClass:'labkey-main-search'});
+            hdrSearch.render(parentEl);
+            var handler = function(item)
+            {
+            var form = Ext.get('headerSearchForm');
+            form.dom.action = item.action;
+            form.dom.target = item.target || '_self';
+            if (hdrSearch.el.hasClass(hdrSearch.emptyClass) && hdrSearch.el.dom.value == hdrSearch.emptyText)
+            hdrSearch.setRawValue(item.emptyText);
+            else
+            form.dom.submit();
+            hdrSearch.emptyText = item.emptyText;
+            };
+            var items = [];
+            items.push({text:serverDescription, emptyText:'Search ' + serverDescription, containerId:'', action:LABKEY.ActionURL.buildURL("search", "search"), target:'', handler:handler});
+            if (LABKEY.project)
+            items.push({text:LABKEY.project.name, emptyText:('Search ' + LABKEY.project.name), containerId:LABKEY.project.id, action:LABKEY.ActionURL.buildURL("search", "search", LABKEY.project.path), target:'', handler:handler});
+            if (window.location.hostname.toLowerCase() != 'labkey.org')
+            items.push({text:'labkey.org', emptyText:'Search labkey.org', containerId:'', action:'http://www.labkey.org/search/home/search.view', target:'_blank', handler:handler});
+            items.push({text:'Google', emptyText:'Search google.com', containerId:'', action:'http://www.google.com/search', target:'_blank', handler:handler});
+            new Ext.menu.Menu({cls:'extContainer',id:'headerSearchMenu',items:items});
+            handler(items[0]);
+            });
+            //]]>
+            </script>
+          </div><!-- /HEADER -->
+        </td>
+      </tr>
+
+      <tr>
+        <td class="labkey-proj">
+          <div class="">
+            <div class="labkey-app-bar">
+              <div class="labkey-folder-header">
+                <table style="width: 1582px;" class="labkey-folder-header" id=
+                "labkey-app-bar-table">
+                  <tbody>
+                    <tr>
+                      <td class="labkey-folder-title"><a href="#">Default Study</a></td>
+
+                      <td class="button-bar">
+                        <div style="margin-left: 2em" class="labkey-tab-strip">
+                          <table cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+				  <!--
+                                  <ul>
+                                    <li class="labkey-tab-active"><a href=
+                                    "http://localhost:8080/labkey/project/Default%20Study/begin.view?"
+                                    id="Start PageTab">Start Page</a></li>
+                                  </ul>
+				  -->
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <table class="labkey-nav-trail">
+                <tbody>
+                  <tr>
+                    <td class="labkey-nav-page-header-container"><span class=
+                    "labkey-nav-page-header" id="labkey-nav-trail-current-page" style=
+                    "visibility: visible;"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div><script type="text/javascript">
+//<![CDATA[
+            (function(){
+            var resizeTask = new Ext.util.DelayedTask(function(){
+            var bodyWidth = Ext.getBody().getWidth();
+            var leftMenuWidth = Ext.getDom("leftmenupanel") ? Ext.getDom("leftmenupanel").offsetWidth : 0;
+            Ext.getDom("labkey-app-bar-table").style.width = (bodyWidth - leftMenuWidth) + "px";
+            });
+
+            Ext.EventManager.on(window, 'resize', function(){
+            resizeTask.delay(100);
+            });
+
+            Ext.onReady(function(){
+            resizeTask.delay(0);
+            });
+            })();
+            //]]>
+            </script>
+          </div><!--content area-->
+
+          <table class="labkey-proj">
+            <tbody>
+              <tr>
+                <td id="bodypanel" class="labkey-body-panel" style="min-width: 400px;">
+                  <img src="{{ STATIC_URL }}labkey/_.gif" height="1" width="400" /><br />
+                  <!-- BODY -->
+                   <!--webpart-->
+
+                  <table name="webpart" id="webpart_28" class="labkey-wp">
+                    <tbody>
+                      <tr class="labkey-wp-header">
+                        <th class="labkey-wp-title-left" title="Welcome, {{ fname }}!">
+                        <span class="labkey-wp-title-text"></span>&nbsp;</th>
+
+                        <th class="labkey-wp-title-right"></th>
+                      </tr>
+
+                      <tr id="WebPartView1953150993">
+                        <td colspan="2" class=" labkey-wp-body">
+                          <!--wiki-->
+
+
+
+    <div id="content" style="position: relative; width: 100%"></div>
+    <div id="loading" style="position: fixed; top: 15px; right: 15px; display: none;"><img src="{{STATIC_URL}}formplayer/img/loading_small.gif" /></div>
+
+
+
+                          <p><!--/wiki--></p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table><!--/webpart--><br />
+                  <!--webpart-->
+
+                </td><!-- /RIGHT -->
+              </tr>
+            </tbody>
+          </table><!--/content area-->
+        </td>
+      </tr>
+    </tbody>
+  </table><script type="text/javascript">
+//<![CDATA[
+  LABKEY.loadScripts(); LABKEY.showNavTrail();
+  //]]>
+  </script><script type="text/javascript">
+//<![CDATA[
+    Ext.onReady(function(){Ext.DomHelper.insertHtml("beforeend",document.body,"<input id=seleniumExtReady name=seleniumExtReady type=hidden>");});
+  //]]>
+  </script>
+  <!--Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20100101 Firefox/13.0.1-->
+  <!--time 12ms -->
+
+  <form>
+    <input id="seleniumExtReady" name="seleniumExtReady" type="hidden" />
+  </form>
+
+
+
+
+
+<script>
 
 if (!window.console) {
   window.console = {
@@ -60,15 +443,34 @@ $(document).ready(function() {
   
 });
 
-    </script>
-    
-  </head>
+</script>
 
-  <body>
 
-    <div id="content" style="position: relative; width: 100%"></div>
-    <div id="loading" style="position: fixed; top: 15px; right: 15px; display: none;"><img src="{{STATIC_URL}}formplayer/img/loading_small.gif" /></div>
 
-  </body>
+
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
