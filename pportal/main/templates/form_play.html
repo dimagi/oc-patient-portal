@@ -357,10 +357,12 @@ LABKEY.init(args);
                         <td colspan="2" class=" labkey-wp-body">
                           <!--wiki-->
 
-
-
-    <div id="content" style="position: relative; width: 100%"></div>
-    <div id="loading" style="position: fixed; top: 15px; right: 15px; display: none;"><img src="{{STATIC_URL}}formplayer/img/loading_small.gif" /></div>
+    <div id="form_container" style="position: relative;">
+        <div id="loading" style="display: none; position: absolute; right: 0px; margin-right: 40px; top: 60px;">
+            <img width="32" height="32" alt="Loading" src="{{STATIC_URL}}formplayer/img/loading_small.gif" />
+        </div>
+	<div id="content" style="position: relative; width: 100%">
+    </div>
 
 
 
@@ -446,6 +448,8 @@ $(document).ready(function() {
     onsubmit: submit_form_post,
     onlanginfo: onlanginfo,
   });
+
+  set_pin(40, $('#form_container'), $('#loading'));
 
   var init_lang = {% if lang %}'{{ lang|escapejs }}'{% else %}null{% endif %};
   sess.load($('#content'), $('#loading'), init_lang);
